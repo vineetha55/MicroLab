@@ -1,0 +1,63 @@
+{% include 'index_nav.html' %}
+<style>
+.hover-shadow:hover {
+  transform: translateY(-5px);
+  transition: 0.3s ease;
+  box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.15);
+}
+</style>
+<div class="container mt-5">
+  <h2 class="mb-4 text-center">Explore Our Health Checkups</h2>
+
+  <div class="row">
+    {% for checkup in checkups %}
+    <div class="col-md-6 col-lg-4 mb-4">
+      <div class="card h-100 shadow-lg border-0 rounded-4 hover-shadow">
+        <div class="card-body d-flex flex-column p-4">
+          <h4 class="card-title fw-bold text-primary mb-2">{{ checkup.title }}</h4>
+          <p class="card-text text-muted small">{{ checkup.description|truncatechars:100 }}</p>
+
+          <hr class="my-3">
+
+          <ul class="list-unstyled mb-3">
+            <li class="mb-1">
+              <i class="fas fa-vials me-2 text-success"></i>
+              <strong>Tests:</strong> {{ checkup.tests.count }}
+            </li>
+            <li class="mb-1">
+              <i class="fas fa-tint me-2 text-info"></i>
+              <strong>Sample Type:</strong> {{ checkup.sample_type }}
+            </li>
+            <li class="mb-1">
+              <i class="fas fa-clock me-2 text-warning"></i>
+              <strong>Fasting:</strong> {% if checkup.fasting_required %}Yes{% else %}No{% endif %}
+            </li>
+            <li>
+              <i class="fas fa-rupee-sign me-2 text-danger"></i>
+              <strong>Price:</strong> ₹{{ checkup.price }}
+            </li>
+          </ul>
+
+          <div class="mt-auto d-flex justify-content-between">
+            <a href="{% url 'checkup_detail' checkup.slug %}" class="btn btn-outline-primary btn-sm px-3">
+              <i class="fas fa-eye me-1"></i> View Details
+            </a>
+            <form action="{% url 'add_checkup_to_cart' %}" method="POST">
+              {% csrf_token %}
+              <input type="hidden" name="checkup_id" value="{{ checkup.id }}">
+              <button type="submit" class="btn btn-success btn-sm px-3">
+                <i class="fas fa-cart-plus me-1"></i> Add to Cart
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+      <div class="alert alert-info text-center">No checkups available at the moment.</div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% include 'footer.html' %}

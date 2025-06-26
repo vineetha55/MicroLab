@@ -1,0 +1,28 @@
+{% include 'navbar.html' %}
+<div class="container mt-4">
+  <h3>Cancelled Orders</h3>
+
+  {% if orders %}
+    {% for order in orders %}
+    <div class="card mb-3 border-danger shadow-sm">
+      <div class="card-body">
+        <h5 class="text-danger">Order #{{ order.id }} - {{ order.full_name }}</h5>
+        <p><strong>Status:</strong> {{ order.get_status_display }}</p>
+        <p><strong>Total:</strong> ₹{{ order.total_amount }}</p>
+        <p><strong>Date:</strong> {{ order.created_at }}</p>
+
+        <h6>Items:</h6>
+        <ul>
+          {% for item in order.items.all %}
+            <li>{{ item.item_name }} ({{ item.item_type|title }}) - ₹{{ item.price }}</li>
+          {% endfor %}
+        </ul>
+
+        <p class="text-muted small">Order was cancelled and will not be processed.</p>
+      </div>
+    </div>
+    {% endfor %}
+  {% else %}
+    <div class="alert alert-warning">No cancelled orders found.</div>
+  {% endif %}
+</div>

@@ -1,0 +1,55 @@
+{% include 'navbar.html' %}
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>All Diagnostic Tests</h2>
+    <a href="{% url 'test_create' %}" class="btn btn-primary">+ Add New Test</a>
+  </div>
+ <form method="GET" class="mb-3">
+    <div class="row">
+      <div class="col-md-4">
+        <label for="branch">Filter by Branch</label>
+        <select name="branch" class="form-control" onchange="this.form.submit()">
+          <option value="">-- All Branches --</option>
+          {% for branch in branches %}
+            <option value="{{ branch.id }}" {% if branch.id|stringformat:"s" == selected_branch_id %}selected{% endif %}>
+              {{ branch.name }}
+            </option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+  </form>
+  {% if tests %}
+  <div class="table-responsive">
+    <table class="table table-bordered table-striped">
+      <thead class="table-dark">
+        <tr>
+          <th>#</th>
+          <th>Test Name</th>
+          <th>Price (₹)</th>
+          <th>Sample Type</th>
+          <th>Report Time</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for test in tests %}
+        <tr>
+          <td>{{ forloop.counter }}</td>
+          <td>{{ test.name }}</td>
+          <td>{{ test.price }}</td>
+          <td>{{ test.sample_type }}</td>
+          <td>{{ test.report_time }}</td>
+          <td>
+            <a href="{% url 'test_edit' test.id %}" class="btn btn-sm btn-warning">Edit</a>
+            <a href="{% url 'test_delete' test.id %}" class="btn btn-sm btn-danger">Delete</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class="alert alert-info">No diagnostic tests available.</div>
+  {% endif %}
+</div>

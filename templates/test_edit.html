@@ -1,0 +1,129 @@
+{% include 'navbar.html' %}
+
+<div class="container mt-4">
+  <h2>Edit Diagnostic Test</h2>
+  <form method="POST">
+    {% csrf_token %}
+ <div class="form-group mb-3">
+  <label for="branch">Select Branch</label>
+  <select class="form-control" name="branch" required>
+    {% for branch in branches %}
+      <option value="{{ branch.id }}" {% if branch.id == selected_branch_id %}selected{% endif %}>
+        {{ branch.name }}
+      </option>
+    {% endfor %}
+  </select>
+</div>
+    <!-- Basic Fields -->
+    <div class="form-group mb-3">
+      <label for="name">Test Name</label>
+      <input type="text" class="form-control" id="name" name="name" value="{{ test.name }}" required>
+    </div>
+
+    <div class="form-group mb-3">
+      <label for="description">About the Test</label>
+      <textarea class="form-control" name="description" rows="3" required>{{ test.description }}</textarea>
+    </div>
+
+    <div class="form-group mb-3">
+      <label for="instructions">Test Preparation</label>
+      <textarea class="form-control" name="instructions" rows="2">{{ test.instructions }}</textarea>
+    </div>
+
+    <div class="form-group mb-3">
+      <label for="price">Price (INR)</label>
+      <input type="number" class="form-control" name="price" value="{{ test.price }}" step="0.01" required>
+    </div>
+
+    <div class="form-group mb-3">
+      <label for="sample_type">Sample Type</label>
+      <input type="text" class="form-control" name="sample_type" value="{{ test.sample_type }}" required>
+    </div>
+
+    <div class="form-group mb-3">
+      <label for="report_time">Report Time</label>
+      <input type="text" class="form-control" name="report_time" value="{{ test.report_time }}" required>
+    </div>
+
+    <!-- Additional Fields -->
+    <div class="form-group mb-3">
+      <label for="reports_within">Reports Within</label>
+      <input type="text" class="form-control" name="reports_within" value="{{ test.reports_within }}">
+    </div>
+
+    <div class="form-group mb-3">
+      <label for="measures">Measures</label>
+      <textarea class="form-control" name="measures">{{ test.measures }}</textarea>
+    </div>
+
+    <div class="form-group mb-3">
+      <label for="components">List of Parameters</label>
+      <textarea class="form-control" name="components">{{ test.components }}</textarea>
+    </div>
+
+    <div class="form-group mb-3">
+      <label for="purpose">Why This Test</label>
+      <textarea class="form-control" name="purpose">{{ test.purpose }}</textarea>
+    </div>
+
+    <div class="form-group mb-3">
+      <label for="interpretations">Interpretations</label>
+      <textarea class="form-control" name="interpretations">{{ test.interpretations }}</textarea>
+    </div>
+
+    <div class="form-group mb-3">
+      <label for="category">Category</label>
+      <input type="text" class="form-control" name="category" value="{{ test.category }}">
+    </div>
+
+    <div class="form-check mb-3">
+      <input type="checkbox" class="form-check-input" name="fasting_required" id="fasting_required"
+             {% if test.fasting_required %}checked{% endif %}>
+      <label for="fasting_required" class="form-check-label">Fasting Required</label>
+    </div>
+
+    <!-- FAQ Section -->
+    <hr>
+    <h5>Frequently Asked Questions</h5>
+    <div id="faq-section">
+      {% for faq in test.faqs.all %}
+      <div class="card p-3 mb-2">
+        <input type="hidden" name="faq_id_{{ forloop.counter0 }}" value="{{ faq.id }}">
+        <div class="form-group mb-2">
+          <label>Question</label>
+          <input type="text" class="form-control" name="faq_question_{{ forloop.counter0 }}" value="{{ faq.question }}">
+        </div>
+        <div class="form-group mb-2">
+          <label>Answer</label>
+          <textarea class="form-control" name="faq_answer_{{ forloop.counter0 }}" rows="2">{{ faq.answer }}</textarea>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <button type="button" class="btn btn-secondary mb-3" onclick="addFAQ()">+ Add New FAQ</button>
+
+    <button type="submit" class="btn btn-primary mt-3">Update Test</button>
+  </form>
+</div>
+
+<script>
+  let faqIndex = {{ test.faqs.count }};
+
+  function addFAQ() {
+    const faqSection = document.getElementById("faq-section");
+    const faqHTML = `
+      <div class="card p-3 mb-2">
+        <div class="form-group mb-2">
+          <label>Question</label>
+          <input type="text" class="form-control" name="faq_question_${faqIndex}" required>
+        </div>
+        <div class="form-group mb-2">
+          <label>Answer</label>
+          <textarea class="form-control" name="faq_answer_${faqIndex}" rows="2" required></textarea>
+        </div>
+      </div>
+    `;
+    faqSection.insertAdjacentHTML("beforeend", faqHTML);
+    faqIndex++;
+  }
+</script>

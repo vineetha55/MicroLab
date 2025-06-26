@@ -1,0 +1,59 @@
+{% include 'navbar.html' %}
+<div class="container mt-4 table-responsive">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Health Packages</h2>
+    <a href="{% url 'package_add' %}" class="btn btn-primary">+ Add New Package</a>
+  </div>
+   <form method="GET" class="mb-3">
+    <div class="row">
+      <div class="col-md-4">
+        <label for="branch">Filter by Branch</label>
+        <select name="branch" class="form-control" onchange="this.form.submit()">
+          <option value="">-- All Branches --</option>
+          {% for branch in branches %}
+            <option value="{{ branch.id }}" {% if branch.id|stringformat:"s" == selected_branch_id %}selected{% endif %}>
+              {{ branch.name }}
+            </option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+  </form>
+
+  {% if packages %}
+  <table class="table table-bordered ">
+    <thead class="table-dark">
+      <tr>
+        <th>#</th>
+        <th>Package Name</th>
+        <th>Category</th>
+        <th>Price</th>
+        <th>Tests</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for package in packages %}
+      <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ package.name }}</td>
+        <td>{{ package.category }}</td>
+        <td>₹{{ package.price }}</td>
+        <td>
+          {% for test in package.tests.all %}
+            <span class="badge bg-info">{{ test.name }}</span>
+          {% endfor %}
+        </td>
+        <td>
+          <a href="{% url 'package_edit' package.id %}" class="btn btn-warning btn-sm">Edit</a>
+          <a href="{% url 'package_delete' package.id %}" class="btn btn-danger btn-sm">Delete</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="alert alert-info">No packages found.</div>
+  {% endif %}
+</div>
+

@@ -1,0 +1,38 @@
+{% include 'navbar.html' %}
+<div class="container mt-4">
+  <h3>Branch List</h3>
+  <a href="{% url 'branch_add' %}" class="btn btn-primary mb-3">+ Add Branch</a>
+  <table class="table table-bordered">
+    <thead class="table-dark">
+      <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Address</th>
+        <th>Pincode</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for branch in branches %}
+      <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ branch.name }}</td>
+        <td>{{ branch.address }}</td>
+        <td>{{ branch.pincode }}</td>
+        <td>
+          {% if branch.active %}
+            <span class="badge bg-success">Active</span>
+          {% else %}
+            <span class="badge bg-secondary">Inactive</span>
+          {% endif %}
+        </td>
+        <td>
+          <a href="{% url 'branch_edit' branch.id %}" class="btn btn-warning btn-sm">Edit</a>
+          <a href="{% url 'branch_delete' branch.id %}" class="btn btn-danger btn-sm">Delete</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>

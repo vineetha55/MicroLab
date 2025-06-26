@@ -1,0 +1,62 @@
+{% include 'navbar.html' %}
+<div class="container mt-4">
+  <h3>{{ title }}</h3>
+  <form method="POST">
+    {% csrf_token %}
+    <div class="form-group mb-3">
+      <label>Title</label>
+      <input type="text" name="title" class="form-control" value="{{ checkup.title|default:'' }}" required>
+    </div>
+    <div class="form-group mb-3">
+      <label>Description</label>
+      <textarea name="description" class="form-control" required>{{ checkup.description|default:'' }}</textarea>
+    </div>
+    <div class="form-group mb-3">
+      <label>Report Time</label>
+      <input type="text" name="report_time" class="form-control" value="{{ checkup.report_time|default:'' }}">
+    </div>
+    <div class="form-group mb-3">
+      <label>Price (₹)</label>
+      <input type="number" name="price" class="form-control" value="{{ checkup.price|default:'' }}">
+    </div>
+    <div class="form-group mb-3">
+      <label>Sample Type</label>
+      <input type="text" name="sample_type" class="form-control" value="{{ checkup.sample_type|default:'' }}">
+    </div>
+    <div class="form-group mb-3">
+      <label>Target Audience</label>
+      <input type="text" name="target_audience" class="form-control" value="{{ checkup.target_audience|default:'' }}">
+    </div>
+    <div class="form-group mb-3">
+      <label>Purpose</label>
+      <textarea name="purpose" class="form-control">{{ checkup.purpose|default:'' }}</textarea>
+    </div>
+    <div class="form-group mb-3">
+      <label>Branch</label>
+      <select name="branch" class="form-control">
+        <option value="">-- Select Branch --</option>
+        {% for b in branches %}
+          <option value="{{ b.id }}" {% if checkup.branch.id == b.id %}selected{% endif %}>{{ b.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="form-group mb-3">
+      <label>Select Tests</label>
+      <select name="tests" class="form-control" multiple required>
+        {% for test in tests %}
+          <option value="{{ test.id }}"
+            {% if checkup and test in checkup.tests.all %}selected{% endif %}>{{ test.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="form-check mb-3">
+      <input type="checkbox" name="fasting_required" class="form-check-input" {% if checkup.fasting_required %}checked{% endif %}>
+      <label class="form-check-label">Fasting Required</label>
+    </div>
+    <div class="form-check mb-3">
+      <input type="checkbox" name="active" class="form-check-input" {% if checkup.active %}checked{% endif %}>
+      <label class="form-check-label">Active</label>
+    </div>
+    <button type="submit" class="btn btn-success">Save Checkup</button>
+  </form>
+</div>

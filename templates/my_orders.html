@@ -1,0 +1,63 @@
+{% include 'index_nav.html' %}
+<div class="container my-5">
+    <h2 class="mb-4">My Orders</h2>
+<div class="mb-4">
+  <ul class="nav nav-pills">
+    <li class="nav-item">
+      <a class="nav-link {% if not selected_status %}active{% endif %}" href="{% url 'My_orders' %}">All</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link {% if selected_status == 'completed' %}active{% endif %}" href="?status=completed">Completed</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link {% if selected_status == 'cancelled' %}active{% endif %}" href="?status=cancelled">Cancelled</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link {% if selected_status == 'ne' %}active{% endif %}" href="?status=new">New</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link {% if selected_status == 'sample_collected' %}active{% endif %}" href="?status=sample_collected">Sample Collected</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link {% if selected_status == 'in_progress' %}active{% endif %}" href="?status=in_progress">Result Pending</a>
+    </li>
+  </ul>
+</div>
+
+    {% if orders %}
+        {% for order in orders %}
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h5 class="mb-0">Order #{{ order.id }}</h5>
+                        <span class="badge 
+                            {% if order.status == 'pending' %}bg-warning
+                            {% elif order.status == 'completed' %}bg-success
+                            {% elif order.status == 'cancelled' %}bg-danger
+                            {% else %}bg-secondary{% endif %}
+                        ">
+                            {{ order.get_status_display }}
+                        </span>
+                    </div>
+                    <p class="mb-1"><strong>Placed on:</strong> {{ order.created_at|date:"d M Y, H:i A" }}</p>
+                    <p class="mb-1"><strong>Total:</strong> ₹{{ order.total_amount }}</p>
+                    <p class="mb-1"><strong>Address:</strong> {{ order.address }}</p>
+
+                    <hr>
+                    <h6>Items in this order:</h6>
+                    <ul class="list-group list-group-flush">
+  {% for item in order.items.all %}
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+        {{ item.item_name }}
+      <span class="badge bg-primary">₹{{ item.price }}</span>
+    </li>
+  {% endfor %}
+</ul>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="alert alert-info">You haven’t placed any orders yet.</div>
+    {% endif %}
+</div>
+{% include 'footer.html' %}

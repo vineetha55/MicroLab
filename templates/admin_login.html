@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>✨
+    Admin Login</title>
+    <!-- Optional: Add a catchy Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            /* Catchy Gradient Background */
+
+
+            font-family: 'Quicksand', sans-serif; /* Nice readable font */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
+            padding: 20px; /* Add some padding for smaller screens */
+        }
+
+
+
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.95); /* Slightly transparent white */
+            padding: 30px 40px; /* Adjust padding slightly */
+            border-radius: 20px; /* More rounded corners */
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2); /* Softer, larger shadow */
+            width: 90%;
+            max-width: 450px;
+            text-align: center;
+            overflow: hidden; /* Ensures content stays within rounded corners */
+            transition: height 0.3s ease-in-out; /* Smooth transition if height changes */
+        }
+
+        .form-container {
+            width: 100%;
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+        }
+
+        /* Class to hide the form */
+        .form-container.hidden {
+            display: none; /* Use display none for switching */
+            opacity: 0;
+        }
+
+
+        h2 {
+            /* Using the 'pixel' font for headings */
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1.6em; /* Adjust size slightly for responsiveness */
+            margin-bottom: 30px;
+            color: #4a4a8a; /* Darker purple color */
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            text-align: left; /* Align labels left */
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #555;
+            font-size: 0.9em; /* Slightly smaller label */
+        }
+
+        .input-group input[type="text"],
+        .input-group input[type="email"],
+        .input-group input[type="password"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd; /* Slightly thicker border */
+            border-radius: 10px; /* Rounded input fields */
+            font-size: 1em;
+            font-family: 'Quicksand', sans-serif;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #86a8e7; /* Highlight color matching gradient */
+            box-shadow: 0 0 8px rgba(134, 168, 231, 0.5); /* Soft glow on focus */
+        }
+
+        /* Style placeholder text */
+        ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+          color: #aaa;
+          opacity: 1; /* Firefox */
+        }
+        :-ms-input-placeholder { /* Internet Explorer 10-11 */
+          color: #aaa;
+        }
+        ::-ms-input-placeholder { /* Microsoft Edge */
+          color: #aaa;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px 15px;
+            background: linear-gradient(45deg, #6a11cb 0%, #2575fc 100%); /* Button gradient */
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: 700;
+            font-family: 'Quicksand', sans-serif;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: transform 0.2s ease, box-shadow 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px); /* Slight lift on hover */
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn:active {
+            transform: translateY(-1px); /* Press down effect */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .switch-form {
+            margin-top: 25px;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .switch-form a {
+            color: #2575fc; /* Link color matching button/gradient */
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .switch-form a:hover {
+            color: #6a11cb; /* Darker color on hover */
+            text-decoration: underline;
+        }
+
+        /* Style emojis consistently */
+        .emoji {
+            display: inline-block; /* Allows transform */
+            margin-left: 5px;
+            font-size: 1.1em; /* Slightly larger emoji */
+            vertical-align: middle; /* Align better with text */
+            transition: transform 0.3s ease;
+        }
+
+        h2 .emoji {
+            font-size: 1em; /* Adjust emoji size in heading if needed */
+        }
+
+        a:hover .emoji,
+        button:hover .emoji {
+            transform: rotate(15deg) scale(1.2); /* Fun rotate/scale effect on hover */
+        }
+
+         /* Responsive Adjustments */
+        @media (max-width: 480px) {
+            .container {
+                padding: 25px 20px;
+            }
+             h2 {
+                font-size: 1.4em;
+            }
+            .btn {
+                font-size: 1em;
+                padding: 12px 10px;
+            }
+             .input-group label {
+                font-size: 0.85em;
+            }
+            .switch-form {
+                font-size: 0.85em;
+            }
+        }
+    </style>
+
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- Login Form -->
+        <div class="form-container" id="login-form">
+            <form action="/admin_login_check/"
+                  method="post">{% csrf_token %}
+                <h2>Log In <span class="emoji">🔑</span></h2>
+                <div class="input-group">
+                    <label for="login-username">Username<span class="emoji">👤</span></label>
+                    <input type="text" id="login-username" name="username" placeholder="Enter your username" required>
+                </div>
+                <div class="input-group">
+                    <label for="login-password">Password <span class="emoji">🔒</span></label>
+                    <!-- WARNING: PASSWORD SENT IN PLAIN TEXT - HIGHLY INSECURE -->
+                    <input type="password" id="login-password" name="password" placeholder="Enter your password" required>
+                </div>
+                <button type="submit" class="btn">Log In <span class="emoji">🚀</span></button>
+
+            </form>
+        </div>
+
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const loginForm = document.getElementById('login-form');
+            const signupForm = document.getElementById('signup-form');
+            const showSignupLink = document.getElementById('show-signup');
+            const showLoginLink = document.getElementById('show-login');
+
+            // Function to show Sign Up form and hide Log In form
+            const showSignup = (event) => {
+                event.preventDefault(); // Prevent the link from navigating
+                loginForm.classList.add('hidden');   // Hide login
+                signupForm.classList.remove('hidden'); // Show signup
+            };
+
+            // Function to show Log In form and hide Sign Up form
+            const showLogin = (event) => {
+                event.preventDefault(); // Prevent the link from navigating
+                signupForm.classList.add('hidden'); // Hide signup
+                loginForm.classList.remove('hidden');  // Show login
+            };
+
+            // Add event listeners to the links to switch forms
+            if (showSignupLink) {
+                showSignupLink.addEventListener('click', showSignup);
+            }
+
+            if (showLoginLink) {
+                showLoginLink.addEventListener('click', showLogin);
+            }
+
+            // --- Password Match Validation (Client-side only) ---
+            // This validation runs BEFORE the mailto link is triggered
+            const signupPassword = document.getElementById('signup-password');
+            const confirmPassword = document.getElementById('signup-confirm-password');
+
+            const validatePassword = () => {
+                if (!confirmPassword || !signupPassword) return; // Ensure elements exist
+
+                if (signupPassword.value !== confirmPassword.value && confirmPassword.value !== '') {
+                    confirmPassword.setCustomValidity("Passwords Don't Match! ❌");
+                    confirmPassword.style.borderColor = '#ff7e5f';
+                } else {
+                    confirmPassword.setCustomValidity('');
+                    confirmPassword.style.borderColor = '#ddd';
+                }
+            };
+
+            if(signupPassword) signupPassword.addEventListener('input', validatePassword);
+            if(confirmPassword) confirmPassword.addEventListener('input', validatePassword);
+
+            // The browser's built-in form validation (including required and setCustomValidity)
+            // will prevent the mailto action if constraints aren't met (e.g., passwords don't match)
+        });
+    </script>
+</body>
+</html>

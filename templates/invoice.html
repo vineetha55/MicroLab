@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head><title>Invoice</title></head>
+<body onload="window.print()">
+  <h2>Invoice #{{ order.id }}</h2>
+  <p>Name: {{ order.full_name }}</p>
+  <p>Total: ₹{{ order.total_amount }}</p>
+  <p>Status: {{ order.get_status_display }}</p>
+  <hr>
+  <ul>
+    {% for item in order.items.all %}
+      <li>{{ item.item_name }} ({{ item.item_type }}) - ₹{{ item.price }}</li>
+    {% endfor %}
+  </ul>
+</body>
+</html>

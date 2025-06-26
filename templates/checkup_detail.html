@@ -1,0 +1,68 @@
+{% include 'index_nav.html' %}
+<div class="container my-5">
+  <!-- Breadcrumb -->
+  <nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/">Home</a></li>
+      <li class="breadcrumb-item"><a href="/checkups/">Checkups</a></li>
+      <li class="breadcrumb-item active" aria-current="page">{{ checkup.title }}</li>
+    </ol>
+  </nav>
+
+  <div class="row">
+    <!-- Left: Info -->
+    <div class="col-md-8">
+      <h2 class="mb-2">{{ checkup.title }}</h2>
+      <p class="text-muted">{{ checkup.description }}</p>
+
+      <!-- Highlights -->
+      <div class="row g-3 mt-4 mb-4">
+        <div class="col-md-6"><strong>Price:</strong> ₹{{ checkup.price }}</div>
+        <div class="col-md-6"><strong>Sample Type:</strong> {{ checkup.sample_type }}</div>
+        <div class="col-md-6"><strong>Report Time:</strong> {{ checkup.report_time }}</div>
+        <div class="col-md-6"><strong>Fasting Required:</strong> {% if checkup.fasting_required %}Yes{% else %}No{% endif %}</div>
+      </div>
+
+      <!-- Tests Included -->
+      <h5 class="mt-4">Included Tests ({{ checkup.tests.count }})</h5>
+      <ul class="list-group mb-4">
+        {% for test in checkup.tests.all %}
+          <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i>{{ test.name }}</li>
+        {% empty %}
+          <li class="list-group-item text-muted">No tests assigned.</li>
+        {% endfor %}
+      </ul>
+
+      <!-- Who Should Take -->
+      {% if checkup.target_audience %}
+        <h5 class="mt-4">Who Should Take This Test?</h5>
+        <p>{{ checkup.target_audience }}</p>
+      {% endif %}
+
+      <!-- Purpose -->
+      {% if checkup.purpose %}
+        <h5 class="mt-4">Why This Test</h5>
+        <p>{{ checkup.purpose }}</p>
+      {% endif %}
+    </div>
+
+    <!-- Right: Pricing Box -->
+    <div class="col-md-4">
+      <div class="card shadow sticky-top" style="top: 80px;">
+        <div class="card-body text-center">
+          <h4 class="mb-2 text-primary">{{ checkup.title }}</h4>
+          <h3 class="text-success">₹{{ checkup.price }}</h3>
+          <p class="small text-muted mb-3">Inclusive of all charges</p>
+          <form method="POST" action="{% url 'add_checkup_to_cart' %}">
+            {% csrf_token %}
+            <input type="hidden" name="checkup_id" value="{{ checkup.id }}">
+            <button type="submit" class="btn btn-success w-100">
+              <i class="fas fa-cart-plus me-2"></i> Add to Cart
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% include 'footer.html' %}

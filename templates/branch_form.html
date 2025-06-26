@@ -1,0 +1,34 @@
+{% include 'navbar.html' %}
+<div class="container mt-4">
+  <h3>{{ title }}</h3>
+  <form method="POST">
+    {% csrf_token %}
+    <div class="mb-3">
+      <label>Branch Name</label>
+      <input type="text" name="name" class="form-control" value="{{ branch.name|default:'' }}" required>
+    </div>
+    <div class="mb-3">
+      <label>Address</label>
+      <textarea name="address" class="form-control">{{ branch.address|default:'' }}</textarea>
+    </div>
+
+    <div class="mb-3">
+      <label>Pincode</label>
+      <input type="text" name="pincode" class="form-control" value="{{ branch.pincode|default:'' }}">
+    </div>
+    <div class="mb-3">
+      <label>Contact Number</label>
+      <input type="text" name="contact_number" class="form-control" value="{{ branch.contact_number|default:'' }}">
+    </div>
+    <div class="mb-3">
+      <label>Email</label>
+      <input type="email" name="email" class="form-control" value="{{ branch.email|default:'' }}">
+    </div>
+    <div class="form-check mb-3">
+      <input type="checkbox" name="active" class="form-check-input" {% if branch.active %}checked{% endif %}>
+      <label class="form-check-label">Active</label>
+    </div>
+    <button type="submit" class="btn btn-success">Save</button>
+    <a href="{% url 'branch_list' %}" class="btn btn-secondary">Cancel</a>
+  </form>
+</div>

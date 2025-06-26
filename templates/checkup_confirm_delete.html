@@ -1,0 +1,9 @@
+{% include 'navbar.html' %}
+<div class="container mt-4">
+  <h4>Are you sure you want to delete <strong>{{ checkup.title }}</strong>?</h4>
+  <form method="POST">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Yes, Delete</button>
+    <a href="{% url 'checkup_list' %}" class="btn btn-secondary">Cancel</a>
+  </form>
+</div>

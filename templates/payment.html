@@ -1,0 +1,27 @@
+{% include 'index_nav.html' %}
+<div class="container mt-5 text-center">
+  <h2>Complete Payment</h2>
+  <p>Amount: ₹{{ org_amount|floatformat:2 }}</p>
+  <button id="rzp-button" class="btn btn-success">Pay with Razorpay</button>
+</div>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+var options = {
+    "key": "{{ razorpay_key }}",
+    "amount": "{{ amount }}",
+    "currency": "INR",
+    "name": "GoMart Diagnostics",
+    "description": "Health Check Order",
+    "order_id": "{{ razorpay_order_id }}",
+    "handler": function (response) {
+        window.location.href = "/payment-success/?payment_id=" + response.razorpay_payment_id;
+    },
+    "theme": { "color": "#0d6efd" }
+};
+var rzp1 = new Razorpay(options);
+document.getElementById('rzp-button').onclick = function(e) {
+    rzp1.open();
+    e.preventDefault();
+}
+</script>

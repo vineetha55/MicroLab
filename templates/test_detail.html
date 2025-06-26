@@ -1,0 +1,102 @@
+{% include 'index_nav.html' %}
+<style>
+.accordion-button:focus {
+  box-shadow: none;
+}
+.card.shadow {
+  border-radius: 12px;
+}
+</style>
+<div class="container my-5">
+  <!-- Breadcrumb -->
+  <nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/">Home</a></li>
+      <li class="breadcrumb-item"><a href="/tests/">Tests</a></li>
+      <li class="breadcrumb-item active" aria-current="page">{{ test.name }}</li>
+    </ol>
+  </nav>
+
+  <div class="row">
+    <!-- Left Column -->
+    <div class="col-md-8">
+      <h2 class="mb-3 text-primary">{{ test.name }}</h2>
+      <p class="text-muted">{{ test.description }}</p>
+
+      <div class="row g-3 mt-4 mb-4">
+        <div class="col-md-6"><strong>Price:</strong> ₹{{ test.price }}</div>
+        <div class="col-md-6"><strong>Sample Type:</strong> {{ test.sample_type }}</div>
+        <div class="col-md-6"><strong>Report Time:</strong> {{ test.report_time }}</div>
+        {% if test.reports_within %}
+          <div class="col-md-6"><strong>Reports Within:</strong> {{ test.reports_within }}</div>
+        {% endif %}
+      </div>
+
+      {% if test.instructions %}
+      <h5>Test Preparation</h5>
+      <p>{{ test.instructions }}</p>
+      {% endif %}
+
+      {% if test.purpose %}
+      <h5>Why This Test</h5>
+      <p>{{ test.purpose }}</p>
+      {% endif %}
+
+      {% if test.measures %}
+      <h5>What is Measured</h5>
+      <p>{{ test.measures }}</p>
+      {% endif %}
+
+      {% if test.components %}
+      <h5>Parameters Covered</h5>
+      <ul class="list-group mb-4">
+        {% for component in test.components.splitlines %}
+          <li class="list-group-item"><i class="fas fa-vial text-success me-2"></i>{{ component }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+
+      {% if test.interpretations %}
+      <h5>Interpretation</h5>
+      <p>{{ test.interpretations }}</p>
+      {% endif %}
+
+      {% if test.faqs.exists %}
+      <h5 class="mt-5">FAQs</h5>
+      <div class="accordion" id="faqAccordion">
+        {% for faq in test.faqs.all %}
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="heading{{ forloop.counter }}">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq{{ forloop.counter }}">
+              {{ faq.question }}
+            </button>
+          </h2>
+          <div id="faq{{ forloop.counter }}" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+            <div class="accordion-body">
+              {{ faq.answer }}
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+
+    <!-- Right Column: Cart -->
+    <div class="col-md-4">
+      <div class="card shadow sticky-top" style="top: 80px;">
+        <div class="card-body text-center">
+          <h4 class="text-primary">{{ test.name }}</h4>
+          <h3 class="text-success mb-3">₹{{ test.price }}</h3>
+          <form method="POST" action="{% url 'add_to_cart' test.id %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-success w-100">
+              <i class="fas fa-cart-plus me-2"></i> Add to Cart
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% include 'footer.html' %}
