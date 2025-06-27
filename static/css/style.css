@@ -412,6 +412,14 @@
     }
 
 }
+@media (max-width: 768px) {
+    .header-carousel .header-carousel-item,
+    .header-carousel .header-carousel-item img {
+        margin-top: 0;
+        transition: 0.5s;
+    }
+
+}
 
 @media (min-width: 992px) {
     .header-carousel .owl-nav .owl-prev,
@@ -1184,3 +1192,10 @@
     background: var(--bs-dark) !important;
 }
 /*** copyright end ***/
+
+
+/* Prevent horizontal scrolling on small devices */
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
