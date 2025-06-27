@@ -16,6 +16,7 @@
   .test-card {
     display: inline-block;
     width: 260px;
+    height:200px;
     margin-right: 16px;
     vertical-align: top;
     white-space: normal;
@@ -100,7 +101,7 @@
         <p class="card-text text-success fw-bold">₹{{ test.price }}</p>
         <p class="text-muted small"><span class="badge-sample">{{ test.sample_type }}</span></p>
         <div class="btn-group mt-2 w-100">
-          <a href="{% url 'test_detail' test.id %}" class="btn btn-sm btn-outline-primary w-50">Details</a>
+          <a href="{% url 'test_detail' test.id %}" class="btn btn-sm text-white w-50"  style="background-color: rgb(237, 150, 74);">Details</a>
           <a href="{% url 'add_to_cart' test.id %}" class="btn btn-sm btn-primary w-50">Add</a>
         </div>
       </div>
@@ -118,7 +119,7 @@
         <p class="card-text text-success fw-bold">₹{{ test.price }}</p>
         <p class="text-muted small"><span class="badge-sample">{{ test.sample_type }}</span></p>
         <div class="btn-group mt-2 w-100">
-          <a href="{% url 'test_detail' test.id %}" class="btn btn-sm btn-outline-primary w-50">Details</a>
+          <a href="{% url 'test_detail' test.id %}" class="btn btn-sm  w-50 text-white" style="background-color: rgb(237, 150, 74);">Details</a>
           <a href="{% url 'add_to_cart' test.id %}" class="btn btn-sm btn-primary w-50">Add</a>
         </div>
       </div>

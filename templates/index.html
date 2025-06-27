@@ -28,6 +28,16 @@
 
         <!-- Template Stylesheet -->
         <link href="{% static 'css/style.css' %}" rel="stylesheet">
+        <style>
+            @media screen and (max-width: 400px) {
+  .footer {
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+}
+        </style>
     </head>
 
     <body>
@@ -116,7 +126,7 @@
                 <h5 class="text-white text-uppercase fw-bold mb-4" style="letter-spacing: 3px;">Trusted Diagnostic Lab</h5>
                 <h1 class="display-1 text-capitalize text-white mb-4">Book Lab Tests From Home</h1>
                 <p class="mb-5 fs-5">Easy online booking, certified lab reports, and free sample collection at your doorstep. Experience hassle-free health checkups today.</p>
-                <a class="btn btn-primary rounded-pill text-white py-3 px-5" href="/user/checkups/">View Checkups</a>
+                <a style="background-color: #0767b5;" class="rounded-pill text-white py-3 px-5" href="/user/checkups/">View Checkups</a>
             </div>
         </div>
     </div>
@@ -129,7 +139,7 @@
                 <h5 class="text-white text-uppercase fw-bold mb-4" style="letter-spacing: 3px;">Comprehensive Health Packages</h5>
                 <h1 class="display-1 text-capitalize text-white mb-4">Your Health, Our Priority</h1>
                 <p class="mb-5 fs-5">Explore full-body checkups, diabetes profiles, and more — designed by experts to suit your lifestyle and budget.</p>
-                <a class="btn btn-primary rounded-pill text-white py-3 px-5" href="/user/checkups/">Explore Packages</a>
+                <a style="background-color: #0767b5;" class="rounded-pill text-white py-3 px-5" href="/user/checkups/">Explore Packages</a>
             </div>
         </div>
     </div>
@@ -162,7 +172,6 @@
                                 <div class="service-content-inner">
                                    <h5 class="mb-4">Comprehensive Blood Tests</h5>
 <p class="mb-4">Includes CBC, Liver, Kidney, Lipid profiles & more — accurate and timely reports delivered to you.</p>
-        <a href="#" class="btn btn-primary rounded-pill text-white py-2 px-4 mb-2">Read More</a>
                                 </div>
                             </div>
                         </div>
@@ -175,7 +184,7 @@
                             <div class="service-content rounded-bottom bg-light p-4">
                                 <div class="service-content-inner">
                                     <h5 class="mb-4">Diabetes Check</h5>
-<p class="mb-4">Monitor your blood sugar, HbA1c, and insulin levels with our fast and reliable diagnostics.</p>            <a href="#" class="btn btn-primary rounded-pill text-white py-2 px-4 mb-2">Read More</a>
+<p class="mb-4">Monitor your blood sugar, HbA1c, and insulin levels with our fast and reliable diagnostics.</p>
                                 </div>
                             </div>
                         </div>
@@ -188,7 +197,7 @@
                             <div class="service-content rounded-bottom bg-light p-4">
                                 <div class="service-content-inner">
                                     <h5 class="mb-4">Full Body Health Packages</h5>
-<p class="mb-4">Affordable health checkups covering essential organs, immunity, and overall wellness.</p>                                   <a href="#" class="btn btn-primary rounded-pill text-white py-2 px-4 mb-2">Read More</a>
+<p class="mb-4">Affordable health checkups covering essential organs, immunity, and overall wellness.</p>
                                 </div>
                             </div>
                         </div>
@@ -201,7 +210,7 @@
                             <div class="service-content rounded-bottom bg-light p-4">
                                 <div class="service-content-inner">
                                   <h5 class="mb-4">Free Home Sample Pickup</h5>
-<p class="mb-4">Book from home, and our team will collect your sample at your doorstep — hygienic and convenient.</p>                                    <a href="#" class="btn btn-primary rounded-pill text-white py-2 px-4 mb-2">Read More</a>
+<p class="mb-4">Book from home, and our team will collect your sample at your doorstep — hygienic and convenient.</p>
                                 </div>
                             </div>
                         </div>
@@ -214,7 +223,8 @@
                             <div class="service-content rounded-bottom bg-light p-4">
                                 <div class="service-content-inner">
                                    <h5 class="mb-4">Thyroid Profile (T3, T4, TSH)</h5>
-<p class="mb-4">Essential tests to evaluate thyroid gland function, ideal for weight, energy, and mood tracking.</p>                                    <a href="#" class="btn btn-primary rounded-pill text-white py-2 px-4 mb-2">Read More</a>
+<p class="mb-4">Essential tests to evaluate thyroid gland function, ideal for weight, energy, and mood tracking.</p>
+
                                 </div>
                             </div>
                         </div>
@@ -227,7 +237,8 @@
                             <div class="service-content rounded-bottom bg-light p-4">
                                 <div class="service-content-inner">
                                     <h5 class="mb-4">COVID-19 RT-PCR</h5>
-<p class="mb-4">Government-approved COVID test with QR-coded reports for travel, work, or safety confirmation.</p>                                    <a href="#" class="btn btn-primary rounded-pill text-white py-2 px-4 mb-2">Read More</a>
+<p class="mb-4">Government-approved COVID test with QR-coded reports for travel, work, or safety confirmation.</p>
+
                                 </div>
                             </div>
                         </div>
@@ -240,7 +251,8 @@
                             <div class="service-content rounded-bottom bg-light p-4">
                                 <div class="service-content-inner">
                                    <h5 class="mb-4">Vitamin Deficiency Panel</h5>
-<p class="mb-4">Check levels of Vitamin D, B12, and more — ideal for fatigue, bone health, and immunity.</p>                                    <a href="#" class="btn btn-primary rounded-pill text-white py-2 px-4 mb-2">Read More</a>
+<p class="mb-4">Check levels of Vitamin D, B12, and more — ideal for fatigue, bone health, and immunity.</p>
+
                                 </div>
                             </div>
                         </div>
@@ -253,13 +265,13 @@
                             <div class="service-content rounded-bottom bg-light p-4">
                                 <div class="service-content-inner">
                                  <h5 class="mb-4">Women's Health Screening</h5>
-<p class="mb-4">Special checkups for PCOD, fertility, anemia, and hormonal balance curated for women's wellness.</p>                                    <a href="#" class="btn btn-primary rounded-pill text-white py-2 px-4 mb-2">Read More</a>
+<p class="mb-4">Special checkups for PCOD, fertility, anemia, and hormonal balance curated for women's wellness.</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-12 text-center wow fadeInUp" data-wow-delay="0.2s">
-                        <a class="btn btn-primary rounded-pill text-white py-3 px-5" href="/user/tests/">Services More</a>
+                        <a class="rounded-pill text-white py-3 px-5" href="/user/tests/" style="background-color: #0767b5;">Services More</a>
                     </div>
                 </div>
             </div>
@@ -292,7 +304,7 @@
                         <p class="text-secondary"><i class="fa fa-check text-primary me-2"></i> Free home sample collection by trained professionals</p>
                         <p class="text-secondary"><i class="fa fa-check text-primary me-2"></i> Same-day or 24-hour digital report delivery</p>
                     </div>
-                    <a href="/user/checkups/" class="btn btn-primary rounded-pill text-white py-3 px-5">Discover More</a>
+                    <a href="/user/checkups/" style="background-color: #0767b5;" class=" rounded-pill text-white py-3 px-5">Discover More</a>
                 </div>
             </div>
         </div>
@@ -319,11 +331,11 @@
             <div class="col-md-6 col-lg-4 col-xl-3 col-sm-4 wow fadeInUp" data-wow-delay="0.3s">
                 <div class="feature-item p-4">
                     <div class="feature-icon mb-4">
-                        <div class="p-3 d-inline-flex bg-white rounded">
-                            <i class="fas fa-home fa-4x text-primary"></i>
+                        <div class="p-3 d-inline-flex rounded">
+                            <i class="fas fa-home fa-4x text-warning"></i>
                         </div>
                     </div>
-                    <div class="feature-content d-flex flex-column">
+                    <div class="feature-content d-flex flex-column ">
                         <h5 class="mb-4">Sample Pickup</h5>
                         <p class="mb-0">Enjoy hassle-free  sample collection from  your home.</p>
                     </div>
@@ -334,8 +346,8 @@
             <div class="col-md-6 col-lg-4 col-xl-3 col-sm-4 wow fadeInUp" data-wow-delay="0.5s" style="height:200px;">
                 <div class="feature-item p-4">
                     <div class="feature-icon mb-4">
-                        <div class="p-3 d-inline-flex bg-white rounded">
-                            <i class="fas fa-clock fa-4x text-primary"></i>
+                        <div class="p-3 d-inline-flex  rounded">
+                            <i class="fas fa-clock fa-4x text-warning"></i>
                         </div>
                     </div>
                     <div class="feature-content d-flex flex-column">
@@ -349,8 +361,8 @@
             <div class="col-md-6 col-lg-4 col-xl-3 col-sm-4 wow fadeInUp" data-wow-delay="0.7s" style="height:200px;">
                 <div class="feature-item p-4">
                     <div class="feature-icon mb-4">
-                        <div class="p-3 d-inline-flex bg-white rounded">
-                            <i class="fas fa-rupee-sign fa-4x text-primary"></i>
+                        <div class="p-3 d-inline-flex  rounded">
+                            <i class="fas fa-rupee-sign fa-4x text-warning"></i>
                         </div>
                     </div>
                     <div class="feature-content d-flex flex-column">
@@ -366,8 +378,8 @@
             <div class="col-md-6 col-lg-4 col-xl-3 wow fadeInUp" data-wow-delay="0.3s" style="height:200px;">
                 <div class="feature-item p-4">
                     <div class="feature-icon mb-4">
-                        <div class="p-3 d-inline-flex bg-white rounded">
-                            <i class="fas fa-mobile-alt fa-4x text-primary"></i>
+                        <div class="p-3 d-inline-flex rounded">
+                            <i class="fas fa-mobile-alt fa-4x text-warning"></i>
                         </div>
                     </div>
                     <div class="feature-content d-flex flex-column">
@@ -380,7 +392,7 @@
 
             <!-- Button -->
             <div class="col-12 text-center wow fadeInUp" data-wow-delay="0.2s">
-                <a href="/user/checkups/" class="btn btn-primary rounded-pill text-white py-3 px-5">Explore Services</a>
+                <a href="/user/checkups/" style="background-color: #0767b5;" class="rounded-pill text-white py-3 px-5">Explore Services</a>
             </div>
         </div>
     </div>
@@ -565,7 +577,7 @@
 
 
         <!-- Footer Start -->
-<div class="container-fluid footer py-5 wow fadeIn" data-wow-delay="0.2s">
+<div class="container-fluid footer py-5 wow fadeIn bg-dark" data-wow-delay="0.2s">
     <div class="container py-5">
         <div class="row g-5">
             <!-- Brand & Social -->
@@ -575,10 +587,10 @@
                     <p>Accurate lab results, fast delivery, and reliable care. Book your health tests from home with our trusted diagnostic team.</p>
                     <div class="d-flex align-items-center">
                         <i class="fas fa-share fa-2x text-white me-2"></i>
-                        <a class="btn-square btn btn-primary text-white rounded-circle mx-1" href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a class="btn-square btn btn-primary text-white rounded-circle mx-1" href="#"><i class="fab fa-instagram"></i></a>
-                        <a class="btn-square btn btn-primary text-white rounded-circle mx-1" href="#"><i class="fab fa-twitter"></i></a>
-                        <a class="btn-square btn btn-primary text-white rounded-circle mx-1" href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a class="btn-square btn btn-warning text-white rounded-circle mx-1" href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a class="btn-square btn btn-warning text-white rounded-circle mx-1" href="#"><i class="fab fa-instagram"></i></a>
+                        <a class="btn-square btn btn-warning text-white rounded-circle mx-1" href="#"><i class="fab fa-twitter"></i></a>
+                        <a class="btn-square btn btn-warning text-white rounded-circle mx-1" href="#"><i class="fab fa-linkedin-in"></i></a>
                     </div>
                 </div>
             </div>
@@ -643,7 +655,7 @@
         <!-- Copyright End -->
 
         <!-- Back to Top -->
-        <a href="#" class="btn btn-primary btn-lg-square back-to-top"><i class="fa fa-arrow-up"></i></a>   
+        <a href="#" style="background-color: #0767b5;" class=" btn-lg-square back-to-top"><i class="fa fa-arrow-up text-dark"></i></a>
 
         
         <!-- JavaScript Libraries -->

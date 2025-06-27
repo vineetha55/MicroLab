@@ -700,3 +700,24 @@ def reset_password(request, uidb64):
             messages.success(request, "Password updated successfully.")
             return redirect('login')
     return render(request, 'reset_password.html', {'user': user})
+
+def remove_from_cart(request):
+    if request.method == 'POST':
+        item_type = request.POST.get('item_type')
+        if item_type == 'test':
+            cart = request.session.get('cart', [])
+            item_id = int(request.POST.get('item_id'))
+            if item_id in cart:
+                cart.remove(item_id)
+                request.session['cart'] = cart
+                messages.success(request, "Test removed from cart.")
+        elif item_type == 'checkup':
+            checkup_cart = request.session.get('checkup_cart', [])
+            item_id = request.POST.get('item_id')
+            if item_id in checkup_cart:
+                checkup_cart.remove(item_id)
+                print(checkup_cart,"ll")
+                request.session['checkup_cart'] = checkup_cart
+                messages.success(request, "Checkup removed from cart.")
+
+    return redirect('cart')  # Make sure 'cart' is your cart view name
