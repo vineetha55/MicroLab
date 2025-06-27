@@ -720,4 +720,13 @@ def remove_from_cart(request):
                 request.session['checkup_cart'] = checkup_cart
                 messages.success(request, "Checkup removed from cart.")
 
-    return redirect('cart')  # Make sure 'cart' is your cart view name
+    return redirect('cart')
+
+def contact(request):
+    return render(request,"contact.html")
+
+def faq(request):
+    return render(request,"faq.html")
+
+def about(request):
+    return render(request, 'about.html')

@@ -1,0 +1,56 @@
+{% include 'index_nav.html' %}
+{% load static %}
+<div class="container my-5">
+  <div class="text-center mb-5">
+    <h1 class="display-4 fw-bold" style="color:#0767b5;">About MicroLabs Diagnostics</h1>
+    <p class="lead text-muted">Delivering Accurate Health Diagnostics You Can Trust</p>
+  </div>
+
+  <div class="row align-items-center mb-5">
+    <div class="col-md-6 mb-4">
+      <img src="{% static 'about1.jpg' %}" class="img-fluid rounded shadow-sm" alt="About MicroLabs">
+    </div>
+    <div class="col-md-6">
+      <h3 class="text-dark">Who We Are</h3>
+      <p>
+        MicroLabs is a modern diagnostic laboratory providing a full spectrum of medical tests and health checkups with cutting-edge technology and expert medical staff.
+        We are committed to delivering fast, reliable, and affordable lab services to every home.
+      </p>
+      <ul class="list-unstyled">
+        <li><i class="fas fa-check-circle text-success me-2"></i> NABL Accredited Lab</li>
+        <li><i class="fas fa-check-circle text-success me-2"></i> Same-Day Sample Collection</li>
+        <li><i class="fas fa-check-circle text-success me-2"></i> Online Reports with Expert Review</li>
+        <li><i class="fas fa-check-circle text-success me-2"></i> Free Home Collection Available</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row text-center">
+    <div class="col-md-4 mb-4">
+      <div class="bg-light rounded p-4 shadow-sm h-100">
+        <i class="fas fa-flask fa-2x text-primary mb-3"></i>
+        <h5 class="text-dark">Advanced Lab Infrastructure</h5>
+        <p class="text-muted">Fully automated and secure lab processes for accurate diagnostics.</p>
+      </div>
+    </div>
+    <div class="col-md-4 mb-4">
+      <div class="bg-light rounded p-4 shadow-sm h-100">
+        <i class="fas fa-user-md fa-2x text-primary mb-3"></i>
+        <h5 class="text-dark">Qualified Experts</h5>
+        <p class="text-muted">Experienced pathologists and certified technicians ensure quality results.</p>
+      </div>
+    </div>
+    <div class="col-md-4 mb-4">
+      <div class="bg-light rounded p-4 shadow-sm h-100">
+        <i class="fas fa-shield-alt fa-2x text-primary mb-3"></i>
+        <h5 class="text-dark">Patient Privacy & Safety</h5>
+        <p class="text-muted">Your health data is secure with us. We follow strict confidentiality protocols.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="text-center mt-5">
+    <a href="/user/checkups/" class="btn btn-lg text-white px-4" style="background-color:#0767b5;">Explore Health Checkups</a>
+  </div>
+</div>
+{% include 'footer.html' %}

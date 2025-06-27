@@ -84,6 +84,11 @@ urlpatterns=[
     path('forgot-password/', views.forgot_password, name='forgot_password'),
     path('reset-password/<uidb64>/', views.reset_password, name='reset_password'),
     path("remove-from-cart/", views.remove_from_cart, name="remove_from_cart"),
+    #######################################################################
+
+    path("contact/",views.contact,name="contact"),
+    path("faq/",views.faq,name="faq"),
+    path('about/', views.about, name='about'),
 
 
 

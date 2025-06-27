@@ -1,0 +1,63 @@
+{% include 'index_nav.html' %}
+
+<style>
+  .text-theme {
+    color: #0767b5;
+  }
+  .btn-theme {
+    background-color: #0767b5;
+    color: white;
+    border: none;
+  }
+  .btn-theme:hover {
+    background-color: #055a9a;
+  }
+  .icon-theme {
+    color: #0767b5;
+  }
+</style>
+
+<div class="container my-5">
+  <div class="row g-5">
+    <!-- Contact Form -->
+    <div class="col-md-6">
+      <h2 class="mb-4 text-theme">Get in Touch</h2>
+      <form method="post" action="">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label class="form-label">Full Name</label>
+          <input type="text" name="name" class="form-control" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Email Address</label>
+          <input type="email" name="email" class="form-control" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Subject</label>
+          <input type="text" name="subject" class="form-control" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Message</label>
+          <textarea name="message" class="form-control" rows="5" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-theme px-4">Send Message</button>
+      </form>
+    </div>
+
+    <!-- Contact Info -->
+    <div class="col-md-6">
+      <h2 class="mb-4 text-theme">Contact Info</h2>
+      <p><i class="fas fa-map-marker-alt me-2 icon-theme"></i> 1st Floor, Health Complex, Kochi, Kerala</p>
+      <p><i class="fas fa-envelope me-2 icon-theme"></i> info@microlabs.com</p>
+      <p><i class="fas fa-phone me-2 icon-theme"></i> +91 98765 43210</p>
+      <p><i class="fas fa-clock me-2 icon-theme"></i> Mon - Sat: 7AM - 8PM</p>
+
+      <div class="mt-4">
+        <!-- Replace src with your actual Google Maps embed link -->
+        <iframe src="https://www.google.com/maps/embed?..." width="100%" height="250" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% include 'footer.html' %}
