@@ -1,10 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% include 'index_nav.html' %}
+<div class="container my-5">
+  <h2>{{ blog.title }}</h2>
+  {% if blog.image %}
+  <img src="{{ blog.image.url }}" class="img-fluid mb-3" alt="{{ blog.title }}">
+  {% endif %}
+  <p class="text-muted"><small>Published on {{ blog.created_at|date:"d M Y" }}</small></p>
+  <div>{{ blog.content|linebreaks }}</div>
+</div>
+{% include 'footer.html' %}

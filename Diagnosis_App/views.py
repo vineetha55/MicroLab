@@ -730,3 +730,47 @@ def faq(request):
 
 def about(request):
     return render(request, 'about.html')
+
+
+def blog_list(request):
+    blogs = BlogPost.objects.all().order_by('-created_at')
+    return render(request, 'blog_list.html', {'blogs': blogs})
+
+def blog_detail(request, slug):
+    blog = BlogPost.objects.get(slug=slug)
+    return render(request, 'blog_detail.html', {'blog': blog})
+
+
+def admin_blog_list(request):
+    blogs = BlogPost.objects.all().order_by('-created_at')
+    return render(request, 'admin_blog_list.html', {'blogs': blogs})
+
+def admin_blog_add(request):
+    if request.method == 'POST':
+        title = request.POST['title']
+        slug = slugify(title)
+        content = request.POST['content']
+        image = request.FILES.get('image')
+
+        BlogPost.objects.create(
+            title=title, slug=slug, content=content, image=image
+        )
+        return redirect('admin_blog_list')
+    return render(request, 'admin_blog_form.html')
+
+def admin_blog_edit(request, id):
+    blog = get_object_or_404(BlogPost, id=id)
+    if request.method == 'POST':
+        blog.title = request.POST['title']
+        blog.slug = slugify(blog.title)
+        blog.content = request.POST['content']
+        if 'image' in request.FILES:
+            blog.image = request.FILES['image']
+        blog.save()
+        return redirect('admin_blog_list')
+    return render(request, 'admin_blog_form.html', {'blog': blog})
+
+def admin_blog_delete(request, id):
+    blog = get_object_or_404(BlogPost, id=id)
+    blog.delete()
+    return redirect('admin_blog_list')

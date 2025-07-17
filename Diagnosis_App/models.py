@@ -86,3 +86,11 @@ class OrderItem(models.Model):
     item_type = models.CharField(max_length=20)  # 'test' or 'checkup'
     item_name = models.CharField(max_length=200)
     price = models.DecimalField(max_digits=8, decimal_places=2)
+
+
+class BlogPost(models.Model):
+    title = models.CharField(max_length=200,null=True)
+    slug = models.SlugField(unique=True)
+    content = models.TextField(null=True)
+    image = models.ImageField(upload_to="blog_images/", blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)

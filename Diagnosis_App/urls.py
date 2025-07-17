@@ -91,6 +91,19 @@ urlpatterns=[
     path('about/', views.about, name='about'),
 
 
+    ############################################################################
+
+    path('blog/', views.blog_list, name='blog_list'),
+    path('blog/<slug:slug>/', views.blog_detail, name='blog_detail'),
+
+    #########################################################################
+
+    path('Admin/blogs/', views.admin_blog_list, name='admin_blog_list'),
+    path('Admin/blogs/add/', views.admin_blog_add, name='admin_blog_add'),
+    path('Admin/blogs/edit/<int:id>/', views.admin_blog_edit, name='admin_blog_edit'),
+    path('Admin/blogs/delete/<int:id>/', views.admin_blog_delete, name='admin_blog_delete'),
+
+
 
 
 ]
