@@ -187,6 +187,41 @@
 <!--  language-code="en"-->
 <!--&gt;</df-messenger>-->
 
+
+<!-- Top 4 Most Viewed Tests -->
+<div class="container mt-5">
+  <h3 class="mb-4">Top Most Viewed Tests</h3>
+  <div class="row">
+    {% for test in most_viewed_tests %}
+      <div class="col-md-3 mb-4">
+        <div class="card shadow-sm h-100">
+          <div class="card-body">
+            <h5 class="card-title">{{ test.name }}</h5>
+            <a href="{% url 'test_detail' test.pk %}" class="btn btn-primary btn-sm">View Details</a>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- Top 4 Most Viewed Checkups -->
+<div class="container mt-5">
+  <h3 class="mb-4">Top Most Viewed Checkups</h3>
+  <div class="row">
+    {% for checkup in most_viewed_checkups %}
+      <div class="col-md-3 mb-4">
+        <div class="card shadow-sm h-100">
+          <div class="card-body">
+            <h5 class="card-title">{{ checkup.title }}</h5>
+            <a href="{% url 'checkup_detail' checkup.pk %}" class="btn btn-success btn-sm">View Details</a>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
         <!-- Services Start -->
         <div class="container-fluid service py-5">
     <div class="container py-5">

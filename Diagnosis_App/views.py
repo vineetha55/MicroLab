@@ -19,7 +19,13 @@ from django.utils.encoding import force_bytes, force_str
 # Create your views here.
 def index(request):
     branches=Branch.objects.all()
-    return render(request,"index.html",{"branches":branches})
+    most_viewed_tests = DiagnosticTest.objects.order_by('-views')[:4]
+    most_viewed_checkups = Checkup.objects.order_by('-views')[:4]
+    return render(request, 'index.html', {
+        'most_viewed_tests': most_viewed_tests,
+        'most_viewed_checkups': most_viewed_checkups,
+        "branches": branches
+    })
 
 
 def admin_login(request):
@@ -311,6 +317,8 @@ def user_tests(request):
 
 def test_detail(request, test_id):
     test = get_object_or_404(DiagnosticTest, id=test_id)
+    test.views += 1
+    test.save()
     branches = Branch.objects.all()
     return render(request, 'test_detail.html', {'test': test,"branches":branches})
 
@@ -521,6 +529,8 @@ def user_checkups(request):
 
 def checkup_detail(request, slug):
     checkup = get_object_or_404(Checkup, slug=slug)
+    checkup.views += 1
+    checkup.save()
     return render(request, 'checkup_detail.html', {'checkup': checkup})
 
 def add_checkup_to_cart(request):

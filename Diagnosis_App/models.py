@@ -26,6 +26,7 @@ class DiagnosticTest(models.Model):
     category = models.CharField(max_length=100, blank=True, null=True)
     interpretations = models.TextField(blank=True, null=True)
     branch=models.ForeignKey(Branch,on_delete=models.CASCADE,null=True)
+    views = models.IntegerField(default=0)
 
 class TestFAQ(models.Model):
     test = models.ForeignKey('DiagnosticTest', on_delete=models.CASCADE, related_name='faqs')
@@ -46,6 +47,7 @@ class Checkup(models.Model):
     description = models.TextField()
     tests = models.ManyToManyField(DiagnosticTest, blank=True)
     branch = models.ForeignKey(Branch, on_delete=models.SET_NULL, null=True, blank=True)
+    views = models.IntegerField(default=0)
 
     report_time = models.CharField(max_length=100)
     price = models.DecimalField(max_digits=8, decimal_places=2)
