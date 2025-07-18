@@ -78,6 +78,7 @@ class Order(models.Model):
     is_paid = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=20, choices=ORDER_STATUS_CHOICES, default='new')
+    result_file = models.FileField(upload_to='results/', null=True, blank=True)
 
 
 
@@ -94,3 +95,4 @@ class BlogPost(models.Model):
     content = models.TextField(null=True)
     image = models.ImageField(upload_to="blog_images/", blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
+

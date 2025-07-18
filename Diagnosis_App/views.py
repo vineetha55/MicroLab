@@ -10,7 +10,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.urls import reverse
-
+from django.http import FileResponse, HttpResponse
+from django.contrib.auth.hashers import make_password
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes, force_str
 
 
 # Create your views here.
@@ -599,7 +602,16 @@ def completed_orders(request):
     orders = Order.objects.filter(status='completed')
     return render(request, 'completed_orders.html', {'orders': orders})
 
-
+def upload_result(request, order_id):
+    if request.method == 'POST':
+        order = get_object_or_404(Order, id=order_id)
+        if 'result_file' in request.FILES:
+            order.result_file = request.FILES['result_file']
+            order.save()
+            messages.success(request, 'Result uploaded successfully.')
+        else:
+            messages.error(request, 'No file selected.')
+    return redirect('completed_orders')
 
 def update_order_status(request, order_id):
     order = get_object_or_404(Order, id=order_id)
@@ -661,12 +673,24 @@ def My_orders(request):
     })
 
 
-from django.contrib.auth.models import User
-from django.contrib.auth.hashers import make_password
-from django.contrib import messages
-from django.shortcuts import render, redirect, get_object_or_404
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.utils.encoding import force_bytes, force_str
+def view_result(request, order_id):
+    order = get_object_or_404(Order, id=order_id, status='completed')
+    return render(request, 'view_result.html', {'order': order})
+
+
+def download_result(request, order_id):
+    order = get_object_or_404(Order, id=order_id, status='completed')
+
+    # Let's assume result PDF file is saved as order.result_file (FileField)
+    if order.result_file:
+        response = FileResponse(order.result_file.open('rb'), content_type='application/pdf')
+        response['Content-Disposition'] = f'attachment; filename="Result_Order_{order.id}.pdf"'
+        return response
+    else:
+        return HttpResponse("Result not available.", status=404)
+
+
+
 
 def forgot_password(request):
     if request.method == 'POST':

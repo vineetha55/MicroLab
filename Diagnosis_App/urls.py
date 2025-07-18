@@ -72,6 +72,7 @@ urlpatterns=[
 
     path('new_lab_orders/', views.new_lab_orders, name='new_lab_orders'),
     path('cancelled_orders/', views.cancelled_orders, name='cancelled_orders'),
+    path('upload-result/<int:order_id>/', views.upload_result, name='upload_result'),
     path('completed_orders/', views.completed_orders, name='completed_orders'),
     path('update_order_status/<int:order_id>/', views.update_order_status, name='update_order_status'),
     path('invoice/<int:order_id>/', views.print_invoice, name='print_invoice'),
@@ -81,6 +82,9 @@ urlpatterns=[
     path("customers/",views.customers,name="customers"),
     path("Logout/",views.Logout,name="Logout"),
     path("My_orders/",views.My_orders,name="My_orders"),
+    path('order/<int:order_id>/view-result/', views.view_result, name='view_result'),
+    path('order/<int:order_id>/download-result/', views.download_result, name='download_result'),
+
     path('forgot-password/', views.forgot_password, name='forgot_password'),
     path('reset-password/<uidb64>/', views.reset_password, name='reset_password'),
     path("remove-from-cart/", views.remove_from_cart, name="remove_from_cart"),
