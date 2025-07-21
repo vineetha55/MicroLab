@@ -84,6 +84,8 @@ urlpatterns=[
     path("My_orders/",views.My_orders,name="My_orders"),
     path('order/<int:order_id>/view-result/', views.view_result, name='view_result'),
     path('order/<int:order_id>/download-result/', views.download_result, name='download_result'),
+    path("My_Account/",views.My_Account,name="My_Account"),
+    path('change-password/', views.change_password, name='change_password'),
 
     path('forgot-password/', views.forgot_password, name='forgot_password'),
     path('reset-password/<uidb64>/', views.reset_password, name='reset_password'),

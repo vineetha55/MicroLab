@@ -1,0 +1,52 @@
+{% include 'index_nav.html' %}
+
+<div class="container my-5">
+  <h2 class="text-center mb-4" style="color: #0767b5;">My Account</h2>
+
+  <form method="post" class="shadow p-4 rounded bg-light mb-5" style="max-width: 600px; margin: auto;">
+    {% csrf_token %}
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-success">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+    <h5 class="mb-3 text-primary">Update Profile</h5>
+
+    <div class="mb-3">
+      <label for="username" class="form-label">Username</label>
+      <input type="text" id="username" name="username" class="form-control" value="{{ user.username }}" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="email" class="form-label">Email</label>
+      <input type="email" id="email" name="email" class="form-control" value="{{ user.email }}" required>
+    </div>
+
+    <div class="d-grid mt-4">
+      <button type="submit" class="btn text-white" style="background-color: #0767b5;">Update Profile</button>
+    </div>
+  </form>
+
+  <form method="post" action="{% url 'change_password' %}" class="shadow p-4 rounded bg-light" style="max-width: 600px; margin: auto;">
+    {% csrf_token %}
+    <h5 class="mb-3 text-primary">Change Password</h5>
+
+
+
+    <div class="mb-3">
+      <label for="new_password1" class="form-label">New Password</label>
+      <input type="password" id="new_password1" name="new_password1" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="new_password2" class="form-label">Confirm New Password</label>
+      <input type="password" id="new_password2" name="new_password2" class="form-control" required>
+    </div>
+
+    <div class="d-grid">
+      <button type="submit" class="btn text-white" style="background-color: #0767b5;">Change Password</button>
+    </div>
+  </form>
+</div>
+
+{% include 'footer.html' %}

@@ -1,6 +1,6 @@
 from datetime import timezone, timedelta, date
 
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import *
 from django.core.mail import send_mail
@@ -808,3 +808,31 @@ def admin_blog_delete(request, id):
     blog = get_object_or_404(BlogPost, id=id)
     blog.delete()
     return redirect('admin_blog_list')
+
+
+def My_Account(request):
+    if request.method == 'POST':
+        user = request.user
+        user.username = request.POST.get('username')
+        user.email = request.POST.get('email')
+        user.save()
+        messages.success(request, "Your profile has been updated.")
+        return redirect('My_Account')
+
+    return render(request, "My_Account.html")
+
+def change_password(request):
+    if request.method == 'POST':
+        old_password = request.POST.get('old_password')
+        new_password1 = request.POST.get('new_password1')
+        new_password2 = request.POST.get('new_password2')
+
+        if new_password1 != new_password2:
+            messages.error(request, 'New passwords do not match.')
+        else:
+            request.user.set_password(new_password1)
+            request.user.save()
+            update_session_auth_hash(request, request.user)  # Keep user logged in
+            messages.success(request, 'Password updated successfully.')
+
+    return redirect('My_Account')
