@@ -823,7 +823,6 @@ def My_Account(request):
 
 def change_password(request):
     if request.method == 'POST':
-        old_password = request.POST.get('old_password')
         new_password1 = request.POST.get('new_password1')
         new_password2 = request.POST.get('new_password2')
 
@@ -834,5 +833,4 @@ def change_password(request):
             request.user.save()
             update_session_auth_hash(request, request.user)  # Keep user logged in
             messages.success(request, 'Password updated successfully.')
-
     return redirect('My_Account')
