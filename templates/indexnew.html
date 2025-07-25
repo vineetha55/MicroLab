@@ -1,0 +1,468 @@
+
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+        <title>Microlab Laboratory</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta content="" name="keywords">
+        <meta content="" name="description">
+
+
+        <!-- Google Web Fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+
+        <!-- Icon Font Stylesheet -->
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"/>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+        <!-- Libraries Stylesheet -->
+        <link href="{% static 'lib/animate/animate.min.css' %}" rel="stylesheet">
+        <link href="{% static 'lib/owlcarousel/assets/owl.carousel.min.css' %}" rel="stylesheet">
+
+
+        <!-- Customized Bootstrap Stylesheet -->
+        <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+
+        <!-- Template Stylesheet -->
+        <link href="{% static 'css/style.css' %}" rel="stylesheet">
+
+    </head>
+
+    <body>
+
+        <!-- Spinner Start -->
+        <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <!-- Spinner End -->
+
+
+        <!-- Topbar Start -->
+        <div class="container-fluid bg-dark px-5 d-none d-lg-block">
+            <div class="row gx-0 align-items-center" style="height: 45px;">
+                <div class="col-lg-8 text-center text-lg-start mb-lg-0">
+
+                        <center>
+                            <a href="#" class="text-light me-4" >Book Full Body Checkup &nbsp;&nbsp;&nbsp; <span class="btn btn-primary" style="background-color: #0767b5;">Order now</span></a>
+                        </center>
+
+                </div>
+
+            </div>
+        </div>
+        <!-- Topbar End -->
+
+
+        <!-- Navbar & Hero Start -->
+        <div class="container-fluid position-relative p-0">
+            <nav class="navbar navbar-expand-lg navbar-light bg-white px-4 px-lg-5 py-3 py-lg-0">
+                <a href="" class="navbar-brand p-0">
+<!--                    <h1 class="text-primary m-0">QuickHealth</h1>-->
+                   <img src="{% static 'microlab.jpeg' %}" alt="Logo">
+                </a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                    <span class="fa fa-bars"></span>
+                </button>
+                <div class="nav-item dropdown">
+                            <a href="#" class="dropdown-item {% if request.GET.branch == i.id|stringformat:'s' %}active{% endif %}" onclick="changeBranch('{{ i.id }}')">{{ i.name }}
+<i class="fas fa-map-marker menu-icon"></i>Branch</a>
+                              <div class="dropdown-menu m-0">
+  {% for i in branches %}
+    <a href="#" class="dropdown-item" onclick="changeBranch('{{ i.id }}')">{{ i.name }}</a>
+  {% endfor %}
+</div>
+                </div>
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+                    {% if request.user.is_authenticated %}
+                    <div class="navbar-nav ms-auto py-0">
+                        <!-- Home Link -->
+                         <a href="/" class="nav-item nav-link">
+  <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="none" viewBox="0 0 24 24">
+    <path fill="url(#home-gradient)" d="M3 12l9-9 9 9h-3v9h-4v-6h-4v6H6v-9H3z"/>
+    <defs>
+      <linearGradient id="home-gradient" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#3C3C3C"/>
+        <stop offset="1" stop-color="#B1B1B1"/>
+      </linearGradient>
+    </defs>
+  </svg>
+  Home
+</a>
+
+                        <a href="/user/tests/" class="nav-item nav-link">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="none" viewBox="0 0 21 20"><path fill="url(#tests-grey-gradient_svg__a)" fill-rule="evenodd" d="M8.121 11.75h.325v.438c0 .242.193.437.433.437h1.083c.24 0 .433-.195.433-.437v-.438h.325a.873.873 0 0 0 .866-.875V4.75a.873.873 0 0 0-.866-.875v-.437A.434.434 0 0 0 10.287 3H8.554a.434.434 0 0 0-.433.438v.437a.873.873 0 0 0-.866.875v6.125c0 .481.39.875.866.875m8.23 3.5h-.034a5.26 5.26 0 0 0 1.333-3.5c0-2.896-2.332-5.25-5.198-5.25v1.75c1.912 0 3.465 1.569 3.465 3.5s-1.553 3.5-3.465 3.5H5.09c-.717 0-1.3.588-1.3 1.313 0 .243.194.437.434.437h12.994c.24 0 .433-.195.433-.437 0-.725-.582-1.313-1.3-1.313m-4.115-.874h-5.63a.22.22 0 0 1-.217-.22v-.437c0-.12.098-.218.216-.218h5.63c.12 0 .217.099.217.218v.438a.22.22 0 0 1-.216.219" clip-rule="evenodd"></path><defs><linearGradient id="tests-grey-gradient_svg__a" x1="13.38" x2="7.966" y1="3" y2="16.964" gradientUnits="userSpaceOnUse"><stop stop-color="#3C3C3C"></stop><stop offset="1" stop-color="#B1B1B1"></stop></linearGradient></defs></svg>Tests</a>
+                        <a href="/user/checkups/" class="nav-item nav-link">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="none" viewBox="0 0 20 20"><path fill="url(#checkups-grey-gradient_svg__a)" fill-rule="evenodd" d="M5.876 4.394c-1.491.588-2.237.882-2.244 1.42-.006.537.732.84 2.209 1.448l2.908 1.195c.587.241.88.362 1.187.363s.604-.116 1.196-.351l2.866-1.14c1.513-.602 2.27-.903 2.273-1.444.002-.54-.751-.837-2.259-1.43l-2.41-.947c-.863-.34-1.295-.509-1.743-.508-.449 0-.882.172-1.749.513zm4.7 10.2c0 1.317 0 1.975.391 2.273.39.298.946.065 2.058-.403l2.228-.937c.845-.355 1.268-.533 1.507-.918.24-.384.24-.885.24-1.886v-2.364c0-1.316 0-1.974-.39-2.273-.39-.298-.946-.064-2.058.404l-2.228.936c-.845.356-1.268.534-1.508.918-.24.385-.24.886-.24 1.887zm-1.543 2.273c.39-.298.39-.956.39-2.273V12.23c0-1 0-1.501-.24-1.886-.24-.384-.662-.562-1.507-.918L5.448 8.49c-1.111-.467-1.667-.7-2.058-.403C3 8.384 3 9.042 3 10.36v2.364c0 1 0 1.502.24 1.886.24.385.662.562 1.507.918l2.228.937c1.112.467 1.667.701 2.058.403" clip-rule="evenodd"></path><defs><linearGradient id="checkups-grey-gradient_svg__a" x1="12.687" x2="7.313" y1="3" y2="17" gradientUnits="userSpaceOnUse"><stop stop-color="#3C3C3C"></stop><stop offset="1" stop-color="#B1B1B1"></stop></linearGradient></defs></svg>
+                            Checkups</a>
+
+                    </div>
+            <a href="https://wa.me/919876543210" target="_blank" class="py-2 px-4 flex-wrap flex-sm-shrink-0 m-1 support btn btn-success text-white">
+  <i class="fab fa-whatsapp me-2"></i>
+</a>
+
+              <a href="/cart/" class="py-2 px-4 flex-wrap flex-sm-shrink-0 text-white rounded" style="background-color: #0767b5;">
+   <i class="fas fa-shopping-cart me-2"></i>
+</a>
+
+                     <a href="/My_Account/" class="py-2 px-4 flex-wrap flex-sm-shrink-0 text-white rounded m-1" style="background-color: #0767b5;">
+                        Account
+                    </a>
+
+                    <a href="/My_orders/" class="py-2 px-4 flex-wrap flex-sm-shrink-0 text-white rounded m-1" style="background-color: #0767b5;">
+                        Orders
+                    </a>
+                    <a href="/Logout/" class="py-2 px-4 flex-wrap flex-sm-shrink-0 text-white rounded " style="background-color: #0767b5;">
+                        <i class="fas fa-power-off me-2"></i>
+                    </a>
+                    {% else %}
+                  <div class="navbar-nav ms-auto py-0">
+                    <a href="/" class="nav-item nav-link">
+  <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="none" viewBox="0 0 24 24">
+    <path fill="url(#home-gradient)" d="M3 12l9-9 9 9h-3v9h-4v-6h-4v6H6v-9H3z"/>
+    <defs>
+      <linearGradient id="home-gradient" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#3C3C3C"/>
+        <stop offset="1" stop-color="#B1B1B1"/>
+      </linearGradient>
+    </defs>
+  </svg>
+  Home
+</a>
+
+                  <a href="/about/" class="nav-item nav-link">
+  <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="none" viewBox="0 0 24 24">
+    <path fill="url(#about-gradient)" d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 4a1.5 1.5 0 110 3 1.5 1.5 0 010-3zm1 12h-2v-6h2v6z"/>
+    <defs>
+      <linearGradient id="about-gradient" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#3C3C3C"/>
+        <stop offset="1" stop-color="#B1B1B1"/>
+      </linearGradient>
+    </defs>
+  </svg>
+  About
+</a>
+
+                    <a href="/blog/" class="nav-item nav-link">
+  <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="none" viewBox="0 0 24 24">
+    <path fill="url(#blog-gradient)" d="M5 4a3 3 0 00-3 3v10a3 3 0 003 3h14a3 3 0 003-3V7a3 3 0 00-3-3H5zm0 2h14a1 1 0 011 1v1H4V7a1 1 0 011-1zm0 4h16v8a1 1 0 01-1 1H5a1 1 0 01-1-1v-8z"/>
+    <defs>
+      <linearGradient id="blog-gradient" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#3C3C3C"/>
+        <stop offset="1" stop-color="#B1B1B1"/>
+      </linearGradient>
+    </defs>
+  </svg>
+  Blog
+</a>
+
+                        <a href="/user/tests/" class="nav-item nav-link">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="none" viewBox="0 0 21 20"><path fill="url(#tests-grey-gradient_svg__a)" fill-rule="evenodd" d="M8.121 11.75h.325v.438c0 .242.193.437.433.437h1.083c.24 0 .433-.195.433-.437v-.438h.325a.873.873 0 0 0 .866-.875V4.75a.873.873 0 0 0-.866-.875v-.437A.434.434 0 0 0 10.287 3H8.554a.434.434 0 0 0-.433.438v.437a.873.873 0 0 0-.866.875v6.125c0 .481.39.875.866.875m8.23 3.5h-.034a5.26 5.26 0 0 0 1.333-3.5c0-2.896-2.332-5.25-5.198-5.25v1.75c1.912 0 3.465 1.569 3.465 3.5s-1.553 3.5-3.465 3.5H5.09c-.717 0-1.3.588-1.3 1.313 0 .243.194.437.434.437h12.994c.24 0 .433-.195.433-.437 0-.725-.582-1.313-1.3-1.313m-4.115-.874h-5.63a.22.22 0 0 1-.217-.22v-.437c0-.12.098-.218.216-.218h5.63c.12 0 .217.099.217.218v.438a.22.22 0 0 1-.216.219" clip-rule="evenodd"></path><defs><linearGradient id="tests-grey-gradient_svg__a" x1="13.38" x2="7.966" y1="3" y2="16.964" gradientUnits="userSpaceOnUse"><stop stop-color="#3C3C3C"></stop><stop offset="1" stop-color="#B1B1B1"></stop></linearGradient></defs></svg>Tests</a>
+                        <a href="/user/checkups/" class="nav-item nav-link">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="none" viewBox="0 0 20 20"><path fill="url(#checkups-grey-gradient_svg__a)" fill-rule="evenodd" d="M5.876 4.394c-1.491.588-2.237.882-2.244 1.42-.006.537.732.84 2.209 1.448l2.908 1.195c.587.241.88.362 1.187.363s.604-.116 1.196-.351l2.866-1.14c1.513-.602 2.27-.903 2.273-1.444.002-.54-.751-.837-2.259-1.43l-2.41-.947c-.863-.34-1.295-.509-1.743-.508-.449 0-.882.172-1.749.513zm4.7 10.2c0 1.317 0 1.975.391 2.273.39.298.946.065 2.058-.403l2.228-.937c.845-.355 1.268-.533 1.507-.918.24-.384.24-.885.24-1.886v-2.364c0-1.316 0-1.974-.39-2.273-.39-.298-.946-.064-2.058.404l-2.228.936c-.845.356-1.268.534-1.508.918-.24.385-.24.886-.24 1.887zm-1.543 2.273c.39-.298.39-.956.39-2.273V12.23c0-1 0-1.501-.24-1.886-.24-.384-.662-.562-1.507-.918L5.448 8.49c-1.111-.467-1.667-.7-2.058-.403C3 8.384 3 9.042 3 10.36v2.364c0 1 0 1.502.24 1.886.24.385.662.562 1.507.918l2.228.937c1.112.467 1.667.701 2.058.403" clip-rule="evenodd"></path><defs><linearGradient id="checkups-grey-gradient_svg__a" x1="12.687" x2="7.313" y1="3" y2="17" gradientUnits="userSpaceOnUse"><stop stop-color="#3C3C3C"></stop><stop offset="1" stop-color="#B1B1B1"></stop></linearGradient></defs></svg>
+                            Checkups</a>
+                    </div>
+              <a href="https://wa.me/919876543210" target="_blank" class="py-2 px-4 flex-wrap flex-sm-shrink-0 m-1 support btn btn-success text-white">
+  <i class="fab fa-whatsapp me-2"></i>
+</a>
+
+            <a href="/cart/" class="py-2 px-4 flex-wrap flex-sm-shrink-0 text-white rounded" style="background-color: #0767b5;">
+   <i class="fas fa-shopping-cart me-2"></i>
+</a>
+                    {% endif %}
+                </div>
+            </nav>
+        </div>
+
+
+
+
+<!-- Hero Section -->
+<section class="hero-section text-white" style="position: relative; background: url('your-image.jpg') center/cover no-repeat; height: 80vh;">
+  <div class="hero-overlay d-flex flex-column justify-content-center align-items-center text-center" style="background-color: rgba(0, 0, 0, 0.6); height: 100%;">
+    <h1 class="display-4 fw-bold">Book Lab Tests at Home</h1>
+    <p class="lead mb-4">Get tested at home with sample collection in just 60 minutes</p>
+    <form class="d-flex justify-content-center" style="max-width: 600px; width: 100%;">
+      <input type="text" class="form-control me-2" placeholder="Enter your location" />
+      <button class="btn" style="background-color: #0767b5; color: white;">Search</button>
+    </form>
+  </div>
+</section>
+<section class="py-5" id="why-us">
+  <div class="container">
+
+    <div class="row text-center">
+      <div class="col-md-3">
+        <div class="mb-3">
+          <i class="fas fa-bolt feature-icon"></i>
+        </div>
+        <h6>60 Mins Collection</h6>
+      </div>
+      <div class="col-md-3">
+        <div class="mb-3">
+          <i class="fas fa-flask feature-icon"></i>
+        </div>
+        <h6>NABL Certified Labs</h6>
+      </div>
+      <div class="col-md-3">
+        <div class="mb-3">
+          <i class="fas fa-user-md feature-icon"></i>
+        </div>
+        <h6>Doctor Reviewed Reports</h6>
+      </div>
+      <div class="col-md-3">
+        <div class="mb-3">
+          <i class="fas fa-mobile-alt feature-icon"></i>
+        </div>
+        <h6>Reports on WhatsApp</h6>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Include Swiper CSS -->
+<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+
+<section class="pt-6 pb-100 bg-white position-relative overflow-hidden z-1 trending-products-area">
+  <div class="container">
+
+    <h2 class="text-center mt-4">Popular Checkups</h2>
+    <div class="row justify-content-center g-4 mt-5 filter_group">
+      <div class="swiper mySwiper px-2 pt-4 pb-7">
+        <div class="swiper-wrapper">
+                {% for checkup in most_viewed_checkups %}
+          <div class="swiper-slide" style="border: 1px solid #f4f4f4; border-radius: 12px; padding: 20px;">
+            <h6 class="fw-bold text-center">{{ checkup.title }}</h6>
+            <p class="text-muted text-center small"> <strong>Tests:</strong> {{ checkup.tests.count }}</p>
+ <strong>Sample Type:</strong> {{ checkup.sample_type }}
+            <p class="fw-bold text-success text-center">₹{{ checkup.price }}</p>
+            <div class="mt-auto d-flex justify-content-between">
+            <a href="{% url 'checkup_detail' checkup.slug %}" style="background-color: rgb(237, 150, 74);" class=" btn-sm px-3 text-white">
+              <i class="fas fa-eye me-1"></i> View Details
+            </a>
+            <form action="{% url 'add_checkup_to_cart' %}" method="POST">
+              {% csrf_token %}
+              <input type="hidden" name="checkup_id" value="{{ checkup.id }}">
+              <button type="submit" style="background-color: #0767b5;" class=" btn-sm px-3 text-black">
+                <i class="fas fa-cart-plus me-1"></i> Add to Cart
+              </button>
+            </form>
+          </div>
+          </div>
+{% endfor %}
+          <!-- Add more static packages here -->
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="pt-6 pb-100 bg-white position-relative overflow-hidden z-1 trending-products-area">
+  <div class="container">
+
+    <h2 class="text-center mt-4">Individual Tests</h2>
+    <div class="row justify-content-center g-4 mt-5 filter_group">
+      <div class="swiper mySwiper px-2 pt-4 pb-7">
+        <div class="swiper-wrapper">
+          {% for test in most_viewed_tests %}
+          <div class="swiper-slide" style="border: 1px solid #f4f4f4; border-radius: 12px; padding: 20px;">
+            <h6 class="fw-bold text-center">{{ test.name }}</h6>
+            <p class="text-muted text-center small">{{ test.sample_type }}</p>
+            <p class="fw-bold text-success text-center">₹{{ test.price }}</p>
+            <div class="btn-group mt-2 w-100">
+          <a href="{% url 'test_detail' test.id %}" class="btn btn-sm  w-50 text-white" style="background-color: rgb(237, 150, 74);">Details</a>
+          <a href="{% url 'add_to_cart' test.id %}" class="btn btn-sm btn-primary w-50">Add</a>
+        </div>
+          </div>
+{% endfor %}
+
+
+          <!-- Add more static packages here -->
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- Full Width Carousel Section -->
+<section id="health-carousel" class="mb-5">
+  <div id="fullWidthCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <div class="carousel-slide d-flex align-items-center justify-content-center text-center text-white" style="background-color: #f5f5f5;">
+          <div class="col-sm-4">
+                <div class="card package-card m-2 p-3 flex-shrink-0 text-dark" >
+            <h5 class="card-title " style="color:#0767b5;font-weight:bold;">Advanced Full Body Checkup</h5>
+            <p class="card-text">Includes 80+ tests with vitamin & thyroid profile</p>
+            <p class="fw-bold">₹1499</p>
+            <a href="#" class="btn btn-outline-primary">Book Now</a>
+          </div>
+          </div>
+            <div class="col-sm-6">
+            <h2 class="display-5 fw-bold">Comprehensive Health Checkups</h2>
+            <p class="lead">Track your health regularly and stay ahead of illness.</p>
+          </div>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <div class="carousel-slide d-flex align-items-center justify-content-center text-center text-white" style="background-color: #f5f5f5;">
+          <div class="col-sm-4">
+        <div class="card package-card m-2 p-3 flex-shrink-0 text-dark" style="width: 300px;">
+                <h5 class="card-title" style="color:#0767b5;font-weight:bold;">Diabetes Care Package</h5>
+                <p class="card-text">Monitor blood sugar levels, HbA1c and more</p>
+                <p class="fw-bold">₹799</p>
+                <a href="#" class="btn btn-outline-primary">Book Now</a>
+              </div>
+          </div>
+            <div class="col-sm-6">
+            <h2 class="display-5 fw-bold">Diabetes Care Package</h2>
+            <p class="lead">Track your health regularly and stay ahead of illness.</p>
+          </div>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <div class="carousel-slide d-flex align-items-center justify-content-center text-center text-white" style="background-color: #f5f5f5;">
+          <div class="col-sm-4">
+                <div class="card package-card m-2 p-3 flex-shrink-0 text-dark" style="width: 300px;">
+                    <h5 class="card-title" style="color:#0767b5;font-weight:bold;">Basic Full Body Checkup</h5>
+                    <p class="card-text">Includes 60+ tests for your complete health evaluation</p>
+                    <p class="fw-bold">₹999</p>
+                    <a href="#" class="btn btn-outline-primary">Book Now</a>
+                  </div>
+          </div>
+            <div class="col-sm-6">
+            <h2 class="display-5 fw-bold">Basic Full Body Checkup</h2>
+            <p class="lead">Track your health regularly and stay ahead of illness.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Controls -->
+    <button class="carousel-control-prev" type="button" data-bs-target="#fullWidthCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#fullWidthCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+</section>
+
+<!-- Add this CSS to your stylesheet or inside a <style> tag -->
+<style>
+  .carousel-slide {
+    height: 300px;
+    background-size: cover;
+    background-position: center;
+    padding: 2rem;
+  }
+</style>
+
+
+<!-- Reviews Section -->
+<section class="py-5 bg-light" id="reviews">
+  <div class="container">
+    <h2 class="text-center mb-4">What Our Customers Say</h2>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="card review-card p-3">
+          <p>"Excellent service. Phlebotomist arrived on time and the report was very fast."</p>
+          <p class="text-end fw-bold">- Anjali R.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card review-card p-3">
+          <p>"Affordable packages and trustworthy lab. I will definitely use again."</p>
+          <p class="text-end fw-bold">- Ravi M.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card review-card p-3">
+          <p>"Smooth booking and quick turnaround. Reports on WhatsApp are a plus!"</p>
+          <p class="text-end fw-bold">- Sneha K.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer text-center">
+  <div class="container">
+    <p>&copy; 2025 LabCheck. All rights reserved.</p>
+    <p>
+      <a href="#">Privacy Policy</a> | 
+      <a href="#">Terms of Service</a>
+    </p>
+  </div>
+</footer>
+
+
+        <!-- Back to Top -->
+        <a href="#" style="background-color: #0767b5;" class=" btn-lg-square back-to-top"><i class="fa fa-arrow-up text-dark"></i></a>
+
+        <!-- JavaScript Libraries -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="{% static 'lib/wow/wow.min.js' %}"></script>
+        <script src="{% static 'lib/easing/easing.min.js' %}"></script>
+        <script src="{% static 'lib/waypoints/waypoints.min.js' %}"></script>
+        <script src="{% static 'lib/owlcarousel/owl.carousel.min.js' %}"></script>
+
+
+        <!-- Template Javascript -->
+        <script src="{% static 'js/main.js' %}"></script>
+        <script>
+  function changeBranch(branchId) {
+    const currentPath = window.location.pathname;
+
+    if (currentPath.includes('checkup') || currentPath.includes('Checkups')) {
+      window.location.href = `/user/checkups/?branch=${branchId}`;
+    } else if (currentPath.includes('test') || currentPath.includes('Test')) {
+      window.location.href = `/user/tests/?branch=${branchId}`;
+    } else {
+      // Fallback (go to a general page or homepage with branch)
+      window.location.href = `/?branch=${branchId}`;
+    }
+  }
+</script>
+ <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
+<!-- Swiper Initialization -->
+<script>
+  var swiper = new Swiper(".mySwiper", {
+    slidesPerView: 1,
+    spaceBetween: 20,
+    loop: true,
+    autoplay: {
+      delay: 2500,
+      disableOnInteraction: false,
+    },
+    breakpoints: {
+      640: {
+        slidesPerView: 1,
+      },
+      768: {
+        slidesPerView: 2,
+      },
+      1024: {
+        slidesPerView: 3,
+      },
+    },
+  });
+</script>
+    </body>
+
+</html>

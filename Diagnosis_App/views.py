@@ -21,7 +21,7 @@ def index(request):
     branches=Branch.objects.all()
     most_viewed_tests = DiagnosticTest.objects.order_by('-views')[:4]
     most_viewed_checkups = Checkup.objects.order_by('-views')[:4]
-    return render(request, 'index.html', {
+    return render(request, 'indexnew.html', {
         'most_viewed_tests': most_viewed_tests,
         'most_viewed_checkups': most_viewed_checkups,
         "branches": branches
