@@ -1,5 +1,7 @@
+import re
 from datetime import timezone, timedelta, date
 
+import requests
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import *
@@ -10,23 +12,62 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.urls import reverse
-from django.http import FileResponse, HttpResponse
+from django.http import FileResponse, HttpResponse,JsonResponse
 from django.contrib.auth.hashers import make_password
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
+from math import radians, sin, cos, sqrt, atan2
 
 
 # Create your views here.
 def index(request):
     branches=Branch.objects.all()
-    most_viewed_tests = DiagnosticTest.objects.order_by('-views')[:4]
-    most_viewed_checkups = Checkup.objects.order_by('-views')[:4]
+    most_viewed_tests = DiagnosticTest.objects.all()[:4]
+    most_viewed_checkups = Checkup.objects.all()[:4]
+
     return render(request, 'indexnew.html', {
         'most_viewed_tests': most_viewed_tests,
         'most_viewed_checkups': most_viewed_checkups,
         "branches": branches
     })
 
+def haversine(lat1, lon1, lat2, lon2):
+    R = 6371  # Earth radius in kilometers
+    dlat = radians(lat2 - lat1)
+    dlon = radians(lon2 - lon1)
+    a = sin(dlat / 2)**2 + cos(radians(lat1)) * cos(radians(lat2)) * sin(dlon / 2)**2
+    c = 2 * atan2(sqrt(a), sqrt(1 - a))
+    return R * c
+
+def get_location_data(request):
+    try:
+        user_lat = float(request.GET.get('lat'))
+        user_lon = float(request.GET.get('lon'))
+    except (TypeError, ValueError):
+        return JsonResponse({'error': 'Invalid coordinates'}, status=400)
+
+    branches = Branch.objects.all()
+    nearest_branch = None
+    min_distance = float('inf')
+
+    for branch in branches:
+        dist = haversine(user_lat, user_lon, branch.latitude, branch.longitude)
+        if dist < min_distance:
+            min_distance = dist
+            nearest_branch = branch
+    print(nearest_branch,"brach")
+
+    if nearest_branch:
+        tests = list(DiagnosticTest.objects.filter(branch=nearest_branch).values())
+        print(tests)
+        checkups = list(Checkup.objects.filter(branch=nearest_branch).values())
+        return JsonResponse({
+            'branches': nearest_branch.name,
+            'most_viewed_tests': tests,
+            'most_viewed_checkups': checkups,
+        })
+
+    return JsonResponse({'error': 'No branches available'}, status=404)
 
 def admin_login(request):
     return render(request,"admin_login.html")
@@ -269,30 +310,83 @@ def branch(request):
 
 def branch_add(request):
     if request.method == 'POST':
+        location_url = request.POST.get("location_url")
+
+        # Expand short link if needed
+        if "maps.app.goo.gl" in location_url:
+            expanded_url = expand_google_maps_url(location_url)
+        else:
+            expanded_url = location_url
+
+        lat, lon = extract_lat_lon_from_maps_url(expanded_url)
+
         Branch.objects.create(
             name=request.POST['name'],
             address=request.POST['address'],
             pincode=request.POST['pincode'],
             contact_number=request.POST['contact_number'],
+            location_url=location_url,  # Save the original short URL (or use expanded_url)
             email=request.POST.get('email', ''),
-            active=True if request.POST.get('active') == 'on' else False
+            active=True if request.POST.get('active') == 'on' else False,
+            latitude=lat,
+            longitude=lon,
+            password=request.POST.get("password")
         )
         return redirect('branch_list')
+
     return render(request, 'branch_form.html', {'title': 'Add Branch'})
+
+def expand_google_maps_url(short_url):
+    try:
+        response = requests.head(short_url, allow_redirects=True, timeout=5)
+        return response.url
+    except Exception as e:
+        print("Error expanding URL:", e)
+        return None
+
+# Step 2: Extract coordinates from full URL
+def extract_lat_lon_from_maps_url(url):
+    match = re.search(r'!1d([0-9.]+)!2d([0-9.]+)', url)
+
+    if match:
+        lon = float(match.group(1))
+        lat = float(match.group(2))
+        return lat, lon
+    return None, None
+
 
 def branch_edit(request, id):
     branch = get_object_or_404(Branch, id=id)
+
     if request.method == 'POST':
+        location_url = request.POST.get("location_url")
+
+        # Expand short URL if needed
+        if "maps.app.goo.gl" in location_url:
+            expanded_url = expand_google_maps_url(location_url)
+        else:
+            expanded_url = location_url
+
+        lat, lon = extract_lat_lon_from_maps_url(expanded_url)
+
         branch.name = request.POST['name']
         branch.address = request.POST['address']
         branch.pincode = request.POST['pincode']
         branch.contact_number = request.POST['contact_number']
         branch.email = request.POST.get('email', '')
+        branch.location_url = location_url
         branch.active = True if request.POST.get('active') == 'on' else False
+        branch.latitude = lat
+        branch.longitude = lon
+        branch.password=request.POST.get("password")
         branch.save()
-        return redirect('branch_list')
-    return render(request, 'branch_form.html', {'title': 'Edit Branch', 'branch': branch})
 
+        return redirect('branch_list')
+
+    return render(request, 'branch_form.html', {
+        'title': 'Edit Branch',
+        'branch': branch
+    })
 def branch_delete(request, id):
     branch = get_object_or_404(Branch, id=id)
     if request.method == 'POST':
@@ -834,3 +928,23 @@ def change_password(request):
             update_session_auth_hash(request, request.user)  # Keep user logged in
             messages.success(request, 'Password updated successfully.')
     return redirect('My_Account')
+
+def branch_login(request):
+    return render(request,"branch_login.html")
+
+
+def branch_login_check(request):
+    if request.method=="POST":
+        email=request.POST.get("email")
+        password=request.POST.get("password")
+        if Branch.objects.filter(email=email,password=password).exists():
+            data=Branch.objects.get(email=email,password=password)
+            request.session['b_id']=data.id
+            return redirect("/Branch/Dashboard/")
+        else:
+            return redirect("/Branch/Login/")
+
+def Branch_Dashboard(request):
+    user=request.session['b_id']
+    data = Branch.objects.get(id=user)
+    return render(request,"Branch_Dashboard.html",{"title":data.name})

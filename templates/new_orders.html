@@ -16,6 +16,8 @@
   </form>
 </div>
   {% for order in orders %}
+  <div class="row bg-white">
+  <div class="col-sm-6">
   <div class="card mb-3">
     <div class="card-body">
       <h5>Order #{{ order.id }} - {{ order.full_name }}</h5>
@@ -36,7 +38,17 @@
 
       <a href="{% url 'print_invoice' order.id %}" class="btn btn-secondary btn-sm mt-2">Print Invoice</a>
     </div>
+      </div>
+ </div>
+     <div class="col-sm-6">
+        <div class="card mb-3">
+       <div class="card-body">
+      <h5>Sample Collection Address </h5>
+      <address>{{order.address}}</address>
+     </div>
   </div>
+     </div>
+</div>
   {% empty %}
     <p>No new orders.</p>
   {% endfor %}

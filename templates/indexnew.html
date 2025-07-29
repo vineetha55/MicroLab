@@ -71,15 +71,10 @@
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                     <span class="fa fa-bars"></span>
                 </button>
-                <div class="nav-item dropdown">
-                            <a href="#" class="dropdown-item {% if request.GET.branch == i.id|stringformat:'s' %}active{% endif %}" onclick="changeBranch('{{ i.id }}')">{{ i.name }}
-<i class="fas fa-map-marker menu-icon"></i>Branch</a>
-                              <div class="dropdown-menu m-0">
-  {% for i in branches %}
-    <a href="#" class="dropdown-item" onclick="changeBranch('{{ i.id }}')">{{ i.name }}</a>
-  {% endfor %}
+               <div class="nav-item dropdown">
+  <i class="fas fa-map-marker menu-icon"></i>
+  <span id="nearest-branch-name" class="text-dark fw-bold"></span>
 </div>
-                </div>
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     {% if request.user.is_authenticated %}
                     <div class="navbar-nav ms-auto py-0">
@@ -190,7 +185,7 @@
     <h1 class="display-4 fw-bold">Book Lab Tests at Home</h1>
     <p class="lead mb-4">Get tested at home with sample collection in just 60 minutes</p>
     <form class="d-flex justify-content-center" style="max-width: 600px; width: 100%;">
-      <input type="text" class="form-control me-2" placeholder="Enter your location" />
+      <input type="text" class="form-control me-2" placeholder="search test or checkups.." />
       <button class="btn" style="background-color: #0767b5; color: white;">Search</button>
     </form>
   </div>
@@ -231,12 +226,12 @@
 <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
 
 <section class="pt-6 pb-100 bg-white position-relative overflow-hidden z-1 trending-products-area">
-  <div class="container">
+  <div class="container" >
 
     <h2 class="text-center mt-4">Popular Checkups</h2>
     <div class="row justify-content-center g-4 mt-5 filter_group">
       <div class="swiper mySwiper px-2 pt-4 pb-7">
-        <div class="swiper-wrapper">
+        <div class="swiper-wrapper" id="most_viewed_checkups_wrapper">
                 {% for checkup in most_viewed_checkups %}
           <div class="swiper-slide" style="border: 1px solid #f4f4f4; border-radius: 12px; padding: 20px;">
             <h6 class="fw-bold text-center">{{ checkup.title }}</h6>
@@ -271,7 +266,7 @@
     <h2 class="text-center mt-4">Individual Tests</h2>
     <div class="row justify-content-center g-4 mt-5 filter_group">
       <div class="swiper mySwiper px-2 pt-4 pb-7">
-        <div class="swiper-wrapper">
+        <div class="swiper-wrapper"  id="most_viewed_tests_wrapper">
           {% for test in most_viewed_tests %}
           <div class="swiper-slide" style="border: 1px solid #f4f4f4; border-radius: 12px; padding: 20px;">
             <h6 class="fw-bold text-center">{{ test.name }}</h6>
@@ -573,6 +568,66 @@
     },
   });
 </script>
+
+  <script>
+function updateHomePageContent(lat, lon) {
+  fetch(`/get-location-data/?lat=${lat}&lon=${lon}`)
+    .then(response => response.json())
+    .then(data => {
+      if (data.error) return;
+
+      const testWrapper = document.getElementById("most_viewed_tests_wrapper");
+      const checkupWrapper = document.getElementById("most_viewed_checkups_wrapper");
+
+      // Clear existing content
+      testWrapper.innerHTML = "";
+      checkupWrapper.innerHTML = "";
+    document.getElementById('nearest-branch-name').innerText = data.branches;
+      // Update Tests
+      data.most_viewed_tests.forEach(test => {
+        const testHTML = `
+          <div class="swiper-slide" style="border: 1px solid #f4f4f4; border-radius: 12px; padding: 20px;">
+              <h6 class="fw-bold text-center">${test.name}</h6>
+              <p class="text-muted text-center small">${test.sample_type || ''}</p>
+              <p class="fw-bold text-success text-center">₹${test.price}</p>
+              <div class="btn-group mt-2 w-100">
+                  <a href="/test/${test.id}/" class="btn btn-sm w-50 text-white" style="background-color: rgb(237, 150, 74);">Details</a>
+                  <a href="/add-to-cart/${test.id}/" class="btn btn-sm btn-primary w-50">Add</a>
+              </div>
+          </div>`;
+        testWrapper.insertAdjacentHTML("beforeend", testHTML);
+      });
+
+      // Update Checkups
+      data.most_viewed_checkups.forEach(checkup => {
+        const checkupHTML = `
+          <div class="swiper-slide" style="border: 1px solid #f4f4f4; border-radius: 12px; padding: 20px;">
+              <h6 class="fw-bold text-center">${checkup.name}</h6>
+              <p class="text-muted text-center small">${checkup.test_count || 0} tests</p>
+              <p class="fw-bold text-success text-center">₹${checkup.price}</p>
+              <div class="btn-group mt-2 w-100">
+                  <a href="/checkup/${checkup.id}/" class="btn btn-sm w-50 text-white" style="background-color: rgb(237, 150, 74);">Details</a>
+                  <a href="/add-checkup-to-cart/${checkup.id}/" class="btn btn-sm btn-primary w-50">Add</a>
+              </div>
+          </div>`;
+        checkupWrapper.insertAdjacentHTML("beforeend", checkupHTML);
+      });
+    });
+}
+
+// Auto call on page load (with geolocation)
+document.addEventListener("DOMContentLoaded", function () {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      position => updateHomePageContent(position.coords.latitude, position.coords.longitude),
+      error => console.log("Geolocation error:", error)
+    );
+  } else {
+    console.log("Geolocation not supported");
+  }
+});
+</script>
+
     </body>
 
 </html>

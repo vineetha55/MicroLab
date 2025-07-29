@@ -3,6 +3,7 @@ from . import views
 
 urlpatterns=[
     path("",views.index,name="index"),
+    path('get-location-data/', views.get_location_data, name='get_location_data'),
     path("Admin/",views.admin_login,name="admin_login"),
     path("admin_login_check/",views.admin_login_check,name="admin_login_check"),
     path("Admin_Dashboard/",views.Admin_Dashboard,name="Admin_Dashboard"),
@@ -109,7 +110,9 @@ urlpatterns=[
     path('Admin/blogs/edit/<int:id>/', views.admin_blog_edit, name='admin_blog_edit'),
     path('Admin/blogs/delete/<int:id>/', views.admin_blog_delete, name='admin_blog_delete'),
 
-
-
+#######################################################################################
+    path("Branch/Login/",views.branch_login,name="branch_login"),
+    path("branch_login_check/",views.branch_login_check,name="branch_login_check"),
+    path("Branch/Dashboard/",views.Branch_Dashboard,name="Branch_Dashboard")
 
 ]

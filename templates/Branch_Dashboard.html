@@ -1,0 +1,143 @@
+{% include 'navbar_branch.html' %}
+{% load static %}
+
+            <div class="page-header">
+              <h3 class="page-title">
+                <span class="page-title-icon bg-gradient-primary text-white me-2">
+                  <i class="mdi mdi-home"></i>
+                </span> Dashboard
+              </h3>
+              <nav aria-label="breadcrumb">
+                <ul class="breadcrumb">
+                  <li class="breadcrumb-item active" aria-current="page">
+                    <span></span>Overview <i class="mdi mdi-alert-circle-outline icon-sm text-primary align-middle"></i>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+            <div class="row">
+              <div class="col-md-4 stretch-card grid-margin">
+                <div class="card bg-gradient-danger card-img-holder text-white">
+                  <div class="card-body">
+                    <img src="{% static 'assets/images/dashboard/circle.svg' %}" class="card-img-absolute" alt="circle-image" />
+                    <h4 class="font-weight-normal mb-3">Total Sales <i class="mdi mdi-chart-line mdi-24px float-end"></i>
+                    </h4>
+                    <h2 class="mb-5">{{total_sales}}</h2>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4 stretch-card grid-margin">
+                <div class="card bg-gradient-info card-img-holder text-white">
+                  <div class="card-body">
+                    <img src="{% static 'assets/images/dashboard/circle.svg' %}" class="card-img-absolute" alt="circle-image" />
+                    <h4 class="font-weight-normal mb-3">Today Orders <i class="mdi mdi-bookmark-outline mdi-24px float-end"></i>
+                    </h4>
+                    <h2 class="mb-5">{{today_orders}}</h2>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4 stretch-card grid-margin">
+                <div class="card bg-gradient-success card-img-holder text-white">
+                  <div class="card-body">
+                    <img src="{% static 'assets/images/dashboard/circle.svg' %}" class="card-img-absolute" alt="circle-image" />
+                    <h4 class="font-weight-normal mb-3">Customers  <i class="mdi mdi-diamond mdi-24px float-end"></i>
+                    </h4>
+                    <h2 class="mb-5">{{customers}}</h2>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+<div class="row">
+  <!-- Bar Chart: Orders by Status -->
+  <div class="col-md-6 stretch-card grid-margin">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Orders by Status</h4>
+        <canvas id="statusChart" height="200"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pie Chart: Test vs Checkup -->
+  <div class="col-md-6 stretch-card grid-margin">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Test vs Checkup</h4>
+        <canvas id="typePieChart" height="200"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <!-- Line Chart: Orders Last 7 Days -->
+  <div class="col-md-12 stretch-card grid-margin">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Orders Over Last 7 Days</h4>
+        <canvas id="ordersChart" height="100"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+          <footer class="footer">
+            <div class="d-sm-flex justify-content-center justify-content-sm-between">
+              <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2023 <a href="https://www.bootstrapdash.com/" target="_blank">BootstrapDash</a>. All rights reserved.</span>
+              <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i class="mdi mdi-heart text-danger"></i></span>
+            </div>
+          </footer>
+          <!-- partial -->
+        </div>
+        <!-- main-panel ends -->
+      </div>
+      <!-- page-body-wrapper ends -->
+    </div>
+    <!-- container-scroller -->
+<script>
+  // Orders by Status
+  const statusCtx = document.getElementById('statusChart').getContext('2d');
+  new Chart(statusCtx, {
+    type: 'bar',
+    data: {
+      labels: [{% for s in status_counts %}"{{ s.status|title }}",{% endfor %}],
+      datasets: [{
+        label: 'Orders',
+        data: [{% for s in status_counts %}{{ s.count }},{% endfor %}],
+        backgroundColor: ['#0d6efd', '#ffc107', '#28a745', '#dc3545', '#6c757d'],
+      }]
+    }
+  });
+
+  // Pie Chart: Test vs Checkup
+  const pieCtx = document.getElementById('typePieChart').getContext('2d');
+  new Chart(pieCtx, {
+    type: 'pie',
+    data: {
+      labels: [{% for i in item_counts %}"{{ i.item_type|title }}",{% endfor %}],
+      datasets: [{
+        data: [{% for i in item_counts %}{{ i.count }},{% endfor %}],
+        backgroundColor: ['#ff6384', '#36a2eb'],
+      }]
+    }
+  });
+
+  // Line Chart: Orders by Date
+  const ordersCtx = document.getElementById('ordersChart').getContext('2d');
+  new Chart(ordersCtx, {
+    type: 'line',
+    data: {
+      labels: [{% for o in orders_by_date %}"{{ o.day }}",{% endfor %}],
+      datasets: [{
+        label: 'Orders',
+        data: [{% for o in orders_by_date %}{{ o.count }},{% endfor %}],
+        borderColor: '#17a2b8',
+        fill: false,
+        tension: 0.3
+      }]
+    }
+  });
+</script>

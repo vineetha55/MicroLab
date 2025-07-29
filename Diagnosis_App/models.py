@@ -8,9 +8,17 @@ class Branch(models.Model):
     address = models.TextField()
     pincode = models.CharField(max_length=10)
     contact_number = models.CharField(max_length=15)
+    location_url=models.URLField(null=True)
     email = models.EmailField(blank=True, null=True)
     active = models.BooleanField(default=True)
+    latitude = models.FloatField(blank=True, null=True)
+    longitude = models.FloatField(blank=True, null=True)
+    password=models.CharField(max_length=100,null=True)
 
+
+# class Branch_Selected(models.Model):
+#     branch = models.ForeignKey(Branch, on_delete=models.CASCADE, null=True)
+#     session_key=models.CharField(max_length=100,null=True)
 
 class DiagnosticTest(models.Model):
     name = models.CharField(max_length=100)
