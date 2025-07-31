@@ -1,4 +1,8 @@
+{% if request.session.b_id%}
+{% include 'navbar_branch.html' %}
+{% else %}
 {% include 'navbar.html' %}
+{% endif %}
 <div class="container mt-4">
   <h3>Cancelled Orders</h3>
 

@@ -61,6 +61,14 @@ def get_location_data(request):
         tests = list(DiagnosticTest.objects.filter(branch=nearest_branch).values())
         print(tests)
         checkups = list(Checkup.objects.filter(branch=nearest_branch).values())
+        session_key=request.session.session_key
+        if session_key:
+            Branch_Selected.objects.get_or_create(branch=nearest_branch,session_key=session_key)
+        else:
+            request.session.create()
+            session_key=request.session.session_key
+            Branch_Selected.objects.get_or_create(branch=nearest_branch,session_key=session_key)
+
         return JsonResponse({
             'branches': nearest_branch.name,
             'most_viewed_tests': tests,
@@ -140,18 +148,25 @@ def Admin_Dashboard(request):
 
 
 def test_list(request):
-    selected_branch_id = request.GET.get('branch')
-    branches = Branch.objects.all()
-    if selected_branch_id:
-        tests = DiagnosticTest.objects.filter(branch_id=selected_branch_id)
+    if request.session.get("b_id"):
+        branch=Branch.objects.get(id=request.session['b_id'])
+        tests = DiagnosticTest.objects.filter(branch=branch)
+        return render(request, 'test_list.html', {
+            'tests': tests,
+        })
     else:
-        tests = DiagnosticTest.objects.all()
+        selected_branch_id = request.GET.get('branch')
+        branches = Branch.objects.all()
+        if selected_branch_id:
+            tests = DiagnosticTest.objects.filter(branch_id=selected_branch_id)
+        else:
+            tests = DiagnosticTest.objects.all()
 
-    return render(request, 'test_list.html', {
-        'tests': tests,
-        'branches': branches,
-        'selected_branch_id': selected_branch_id,
-    })
+        return render(request, 'test_list.html', {
+            'tests': tests,
+            'branches': branches,
+            'selected_branch_id': selected_branch_id,
+        })
 
 def test_create(request):
     branches=Branch.objects.all()
@@ -397,15 +412,18 @@ def branch_delete(request, id):
 
 
 def user_tests(request):
-    branch_id = request.GET.get('branch')
+    br=Branch_Selected.objects.filter(session_key=request.session.session_key)
+    if br:
+        br = Branch_Selected.objects.get(session_key=request.session.session_key)
+    branch_id = br.branch.id
     if branch_id:
         tests = DiagnosticTest.objects.filter(branch_id=branch_id)
-        most_selected_tests = DiagnosticTest.objects.order_by('-id')[:5]
+        most_selected_tests = DiagnosticTest.objects.filter(branch_id=branch_id).order_by('-id')[:5]
     else:
         tests = DiagnosticTest.objects.all()
         most_selected_tests = DiagnosticTest.objects.order_by('-id')[:5]
     branches = Branch.objects.all()
-    return render(request,"user_tests.html",{"tests":tests,"branches":branches,"most_selected_tests":most_selected_tests})
+    return render(request,"user_tests.html",{"tests":tests,"branches":branches,"most_selected_tests":most_selected_tests,'br':br})
 
 
 
@@ -445,6 +463,10 @@ def cart(request):
 
 @login_required
 def checkout(request):
+    br = Branch_Selected.objects.filter(session_key=request.session.session_key)
+    if br:
+        br = Branch_Selected.objects.get(session_key=request.session.session_key)
+
     test_ids = request.session.get('cart', [])
     checkup_ids = request.session.get('checkup_cart', [])
     tests = DiagnosticTest.objects.filter(id__in=test_ids)
@@ -493,7 +515,8 @@ def checkout(request):
     return render(request, 'checkout.html', {
         'test_items': tests,
         'checkup_items': checkups,
-        'total': total
+        'total': total,
+        'br':br
     })
 
 
@@ -548,8 +571,13 @@ def user_logout(request):
 
 
 def checkup_list(request):
-    checkups = Checkup.objects.all()
-    branches = Branch.objects.all()
+    if request.session.get("b_id"):
+        branch=Branch.objects.get(id=request.session['b_id'])
+        checkups = Checkup.objects.filter(branch=branch)
+        branches = Branch.objects.all()
+    else:
+        branches = Branch.objects.all()
+        checkups = Checkup.objects.all()
     return render(request, 'checkup_list.html', {'checkups': checkups,"branches":branches})
 from django.utils.text import slugify
 def checkup_add(request):
@@ -612,13 +640,16 @@ def checkup_delete(request, pk):
 
 
 def user_checkups(request):
-    branch_id = request.GET.get('branch')
+    br = Branch_Selected.objects.filter(session_key=request.session.session_key)
+    if br:
+        br = Branch_Selected.objects.get(session_key=request.session.session_key)
+    branch_id = br.branch.id
     if branch_id:
         checkups = Checkup.objects.filter(active=True,branch_id=branch_id)
     else:
         checkups = Checkup.objects.filter(active=True)
     branches = Branch.objects.all()
-    return render(request, 'user_checkups.html', {'checkups': checkups,"branches":branches})
+    return render(request, 'user_checkups.html', {'checkups': checkups,"branches":branches,'br':br})
 
 
 def checkup_detail(request, slug):
@@ -647,7 +678,9 @@ def add_checkup_to_cart(request):
 def payment_success(request):
     payment_id = request.GET.get('payment_id')
     data = request.session.get('checkout_data')
-
+    br = Branch_Selected.objects.filter(session_key=request.session.session_key)
+    if br:
+        br = Branch_Selected.objects.get(session_key=request.session.session_key)
     tests = DiagnosticTest.objects.filter(id__in=data['test_ids'])
     checkups = Checkup.objects.filter(id__in=data['checkup_ids'])
 
@@ -659,7 +692,8 @@ def payment_success(request):
         gender=data['gender'],
         address=data['address'],
         total_amount=data['total'],
-        is_paid=True
+        is_paid=True,
+        branch=br.branch
     )
 
     for test in tests:
@@ -686,11 +720,17 @@ def thank_you(request):
 def new_lab_orders(request):
     active_statuses = ['new', 'sample_collected', 'processing']
     filter_status = request.GET.get('status')
-
-    if filter_status:
-        orders = Order.objects.filter(status=filter_status)
+    if request.session.get("b_id"):
+        branch=Branch.objects.get(id=request.session['b_id'])
+        if filter_status:
+            orders = Order.objects.filter(status=filter_status,branch=branch)
+        else:
+            orders = Order.objects.filter(status__in=active_statuses,branch=branch)
     else:
-        orders = Order.objects.filter(status__in=active_statuses)
+        if filter_status:
+            orders = Order.objects.filter(status=filter_status)
+        else:
+            orders = Order.objects.filter(status__in=active_statuses)
 
     return render(request, 'new_orders.html', {
         'orders': orders,
@@ -699,11 +739,19 @@ def new_lab_orders(request):
     })
 
 def cancelled_orders(request):
-    orders = Order.objects.filter(status='cancelled')
+    if request.session.get("b_id"):
+        branch=Branch.objects.get(id=request.session['b_id'])
+        orders = Order.objects.filter(status='cancelled',branch=branch)
+    else:
+        orders = Order.objects.filter(status='cancelled')
     return render(request, 'cancelled_orders.html', {'orders': orders})
 
 def completed_orders(request):
-    orders = Order.objects.filter(status='completed')
+    if request.session.get("b_id"):
+        branch=Branch.objects.get(id=request.session['b_id'])
+        orders = Order.objects.filter(status='completed',branch=branch)
+    else:
+        orders = Order.objects.filter(status='completed')
     return render(request, 'completed_orders.html', {'orders': orders})
 
 def upload_result(request, order_id):
@@ -948,3 +996,10 @@ def Branch_Dashboard(request):
     user=request.session['b_id']
     data = Branch.objects.get(id=user)
     return render(request,"Branch_Dashboard.html",{"title":data.name})
+
+def LogoutBranch(request):
+    if request.session.get("b_id"):
+        del request.session['b_id']
+        return redirect("/Branch/Login/")
+    else:
+        return redirect("/Branch/Login/")

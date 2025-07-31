@@ -50,7 +50,7 @@
                 <div class="col-lg-8 text-center text-lg-start mb-lg-0">
 
                         <center>
-                            <a href="#" class="text-light me-4" >Book Full Body Checkup &nbsp;&nbsp;&nbsp; <span class="btn btn-primary" style="background-color: #0767b5;">Order now</span></a>
+                            <a href="#" class="text-light me-4" >Book Full Body Checkup &nbsp;&nbsp;&nbsp; <span class="btn btn-primary" style="background-image: #0767b5;">Order now</span></a>
                         </center>
 
                 </div>
@@ -132,18 +132,6 @@
   Home
 </a>
 
-                  <a href="/about/" class="nav-item nav-link">
-  <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="none" viewBox="0 0 24 24">
-    <path fill="url(#about-gradient)" d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 4a1.5 1.5 0 110 3 1.5 1.5 0 010-3zm1 12h-2v-6h2v6z"/>
-    <defs>
-      <linearGradient id="about-gradient" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse">
-        <stop stop-color="#3C3C3C"/>
-        <stop offset="1" stop-color="#B1B1B1"/>
-      </linearGradient>
-    </defs>
-  </svg>
-  About
-</a>
 
                     <a href="/blog/" class="nav-item nav-link">
   <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="none" viewBox="0 0 24 24">
@@ -180,9 +168,9 @@
 
 
 <!-- Hero Section -->
-<section class="hero-section text-white" style="position: relative; background: url('your-image.jpg') center/cover no-repeat; height: 80vh;">
+<section class="hero-section text-white" style="position: relative; background: url('{% static 'banner.jpg' %}') center/cover no-repeat; height: 80vh;">
   <div class="hero-overlay d-flex flex-column justify-content-center align-items-center text-center" style="background-color: rgba(0, 0, 0, 0.6); height: 100%;">
-    <h1 class="display-4 fw-bold">Book Lab Tests at Home</h1>
+    <h1 class="display-4 fw-bold text-white">Book Lab Tests at Home</h1>
     <p class="lead mb-4">Get tested at home with sample collection in just 60 minutes</p>
     <form class="d-flex justify-content-center" style="max-width: 600px; width: 100%;">
       <input type="text" class="form-control me-2" placeholder="search test or checkups.." />

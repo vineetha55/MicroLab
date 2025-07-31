@@ -1,4 +1,8 @@
+{% if request.session.b_id%}
+{% include 'navbar_branch.html' %}
+{% else %}
 {% include 'navbar.html' %}
+{% endif %}
 <div class="container mt-4">
   <h3>New Lab Orders</h3>
 
@@ -45,6 +49,8 @@
        <div class="card-body">
       <h5>Sample Collection Address </h5>
       <address>{{order.address}}</address>
+           <h5>Branch</h5>
+           <span>{{order.branch.name}}</span>
      </div>
   </div>
      </div>

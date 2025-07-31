@@ -1,4 +1,8 @@
+{% if request.session.b_id%}
+{% include 'navbar_branch.html' %}
+{% else %}
 {% include 'navbar.html' %}
+{% endif %}
 <div class="container mt-4">
   <h3>All Checkups</h3>
   <a href="{% url 'checkup_add' %}" class="btn btn-primary mb-3">+ Add Checkup</a>

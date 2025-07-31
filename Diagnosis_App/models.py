@@ -16,9 +16,9 @@ class Branch(models.Model):
     password=models.CharField(max_length=100,null=True)
 
 
-# class Branch_Selected(models.Model):
-#     branch = models.ForeignKey(Branch, on_delete=models.CASCADE, null=True)
-#     session_key=models.CharField(max_length=100,null=True)
+class Branch_Selected(models.Model):
+    branch = models.ForeignKey(Branch, on_delete=models.CASCADE, null=True)
+    session_key=models.CharField(max_length=100,null=True)
 
 class DiagnosticTest(models.Model):
     name = models.CharField(max_length=100)
@@ -88,7 +88,8 @@ class Order(models.Model):
     is_paid = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=20, choices=ORDER_STATUS_CHOICES, default='new')
-    result_file = models.FileField(upload_to='results/', null=True, blank=True)
+    result_file = models.FileField(upload_to='results/', null=True, blank=True),
+    branch=models.ForeignKey(Branch,on_delete=models.CASCADE,null=True)
 
 
 
