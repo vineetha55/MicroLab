@@ -75,6 +75,9 @@
   <i class="fas fa-map-marker menu-icon"></i>
                    <a href="#" class="text-dark" data-bs-toggle="modal" data-bs-target="#branchesModal">
                  My location<br>
+                       {% if not br %}
+                       <span class="text-dark" id="nearest-branch-name" style="font-size:10px;"></span>
+                    {% endif %}
                 <span class="text-dark" style="font-size:10px;">{{ br.branch.name }}</span>
                 </a>
 </div>
@@ -631,14 +634,14 @@ function updateHomePageContent(lat, lon) {
     .then(response => response.json())
     .then(data => {
       if (data.error) return;
-
+    document.getElementById('nearest-branch-name').innerText = data.branches;
       const testWrapper = document.getElementById("most_viewed_tests_wrapper");
       const checkupWrapper = document.getElementById("most_viewed_checkups_wrapper");
 
       // Clear existing content
       testWrapper.innerHTML = "";
       checkupWrapper.innerHTML = "";
-    document.getElementById('nearest-branch-name').innerText = data.branches;
+
       // Update Tests
       data.most_viewed_tests.forEach(test => {
         const testHTML = `

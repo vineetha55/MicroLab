@@ -22,17 +22,26 @@ from math import radians, sin, cos, sqrt, atan2
 # Create your views here.
 def index(request):
     branches=Branch.objects.all()
-    br=Branch_Selected.objects.get(session_key=request.session.session_key)
-    most_viewed_tests = DiagnosticTest.objects.filter(branch=br.branch.id)[:4]
-    most_viewed_checkups = Checkup.objects.filter(branch=br.branch.id)[:4]
+    br=Branch_Selected.objects.filter(session_key=request.session.session_key)
+    if br:
+        br=Branch_Selected.objects.get(session_key=request.session.session_key)
+        most_viewed_tests = DiagnosticTest.objects.filter(branch=br.branch.id)[:4]
+        most_viewed_checkups = Checkup.objects.filter(branch=br.branch.id)[:4]
+        return render(request, 'indexnew.html', {
+            'most_viewed_tests': most_viewed_tests,
+            'most_viewed_checkups': most_viewed_checkups,
+            "branches": branches,
+            'br': br
+        })
+    else:
+        most_viewed_tests = DiagnosticTest.objects.all()[:4]
+        most_viewed_checkups = Checkup.objects.all()[:4]
 
-
-    return render(request, 'indexnew.html', {
-        'most_viewed_tests': most_viewed_tests,
-        'most_viewed_checkups': most_viewed_checkups,
-        "branches": branches,
-        'br':br
-    })
+        return render(request, 'indexnew.html', {
+            'most_viewed_tests': most_viewed_tests,
+            'most_viewed_checkups': most_viewed_checkups,
+            "branches": branches,
+        })
 def set_branch(request, branch_id):
     br=Branch_Selected.objects.get(session_key=request.session.session_key)
     br.branch_id=branch_id
