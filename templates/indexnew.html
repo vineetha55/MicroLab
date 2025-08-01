@@ -73,7 +73,10 @@
                 </button>
                <div class="nav-item dropdown">
   <i class="fas fa-map-marker menu-icon"></i>
-  <span id="nearest-branch-name" class="text-dark fw-bold"></span>
+                   <a href="#" class="text-dark" data-bs-toggle="modal" data-bs-target="#branchesModal">
+                 My location<br>
+                <span class="text-dark" style="font-size:10px;">{{ br.branch.name }}</span>
+                </a>
 </div>
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     {% if request.user.is_authenticated %}
@@ -165,6 +168,33 @@
         </div>
 
 
+<div class="modal fade" id="branchesModal" tabindex="-1" aria-labelledby="branchesModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg"> <!-- modal-sm for compact width -->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="branchesModalLabel">Select Branch</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+        <div class="row">
+          {% for branch in branches %}
+            <div class="col-4 mb-2">
+              <a href="{% url 'set_branch' branch.id %}" class="text-decoration-none">
+                <div class="card shadow-sm p-2" style="cursor:pointer;">
+                  <div class="card-body p-2">
+                    <h6 class="card-title mb-0 text-dark">{{ branch.name }}</h6>
+                  </div>
+                </div>
+              </a>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
 
 
 <!-- Hero Section -->
@@ -215,11 +245,11 @@
 
 <section class="pt-6 pb-100 bg-white position-relative overflow-hidden z-1 trending-products-area">
   <div class="container" >
-
+{% if most_viewed_checkups%}
     <h2 class="text-center mt-4">Popular Checkups</h2>
     <div class="row justify-content-center g-4 mt-5 filter_group">
       <div class="swiper mySwiper px-2 pt-4 pb-7">
-        <div class="swiper-wrapper" id="most_viewed_checkups_wrapper">
+        <div class="swiper-wrapper" id="">
                 {% for checkup in most_viewed_checkups %}
           <div class="swiper-slide" style="border: 1px solid #f4f4f4; border-radius: 12px; padding: 20px;">
             <h6 class="fw-bold text-center">{{ checkup.title }}</h6>
@@ -246,7 +276,7 @@
     </div>
   </div>
 </section>
-
+{% endif %}
 
 <section class="pt-6 pb-100 bg-white position-relative overflow-hidden z-1 trending-products-area">
   <div class="container">
@@ -254,7 +284,7 @@
     <h2 class="text-center mt-4">Individual Tests</h2>
     <div class="row justify-content-center g-4 mt-5 filter_group">
       <div class="swiper mySwiper px-2 pt-4 pb-7">
-        <div class="swiper-wrapper"  id="most_viewed_tests_wrapper">
+        <div class="swiper-wrapper"  id="">
           {% for test in most_viewed_tests %}
           <div class="swiper-slide" style="border: 1px solid #f4f4f4; border-radius: 12px; padding: 20px;">
             <h6 class="fw-bold text-center">{{ test.name }}</h6>
@@ -278,7 +308,7 @@
 
 
 <!-- Full Width Carousel Section -->
-<section id="health-carousel" class="mb-5">
+<section id="health-carousel" class="mb-5 container-fluid">
   <div id="fullWidthCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
     <div class="carousel-inner">
       <div class="carousel-item active">
@@ -293,7 +323,7 @@
           </div>
             <div class="col-sm-6">
             <h2 class="display-5 fw-bold">Comprehensive Health Checkups</h2>
-            <p class="lead">Track your health regularly and stay ahead of illness.</p>
+            <p class="lead text-dark">Track your health regularly and stay ahead of illness.</p>
           </div>
         </div>
       </div>
@@ -302,14 +332,14 @@
           <div class="col-sm-4">
         <div class="card package-card m-2 p-3 flex-shrink-0 text-dark" style="width: 300px;">
                 <h5 class="card-title" style="color:#0767b5;font-weight:bold;">Diabetes Care Package</h5>
-                <p class="card-text">Monitor blood sugar levels, HbA1c and more</p>
+                <p class="card-text">Monitor blood sugar & more</p>
                 <p class="fw-bold">₹799</p>
                 <a href="#" class="btn btn-outline-primary">Book Now</a>
               </div>
           </div>
             <div class="col-sm-6">
             <h2 class="display-5 fw-bold">Diabetes Care Package</h2>
-            <p class="lead">Track your health regularly and stay ahead of illness.</p>
+            <p class="lead text-dark">Track your health daily & stay ahead of illness.</p>
           </div>
         </div>
       </div>
@@ -318,14 +348,14 @@
           <div class="col-sm-4">
                 <div class="card package-card m-2 p-3 flex-shrink-0 text-dark" style="width: 300px;">
                     <h5 class="card-title" style="color:#0767b5;font-weight:bold;">Basic Full Body Checkup</h5>
-                    <p class="card-text">Includes 60+ tests for your complete health evaluation</p>
+                    <p class="card-text">Your complete health evaluation</p>
                     <p class="fw-bold">₹999</p>
                     <a href="#" class="btn btn-outline-primary">Book Now</a>
                   </div>
           </div>
             <div class="col-sm-6">
-            <h2 class="display-5 fw-bold">Basic Full Body Checkup</h2>
-            <p class="lead">Track your health regularly and stay ahead of illness.</p>
+            <h2 class="display-5 fw-bold">Full Body Checkup</h2>
+            <p class="lead text-dark">Track your health regularly and stay ahead of illness.</p>
           </div>
         </div>
       </div>
@@ -382,7 +412,7 @@
 </section>
 
 <!-- Full Width Carousel Section -->
-<div id="health-carousel11" class="mb-5 container">
+<div id="health-carousel11" class="mb-5">
   <div id="fullWidthCarousel11" class="carousel slide carousel-fade" data-bs-ride="carousel">
     <div class="carousel-inner">
       <div class="carousel-item active">
@@ -423,6 +453,44 @@
   </div>
 </div>
 
+<section class="py-5 bg-light">
+  <div class="container text-center">
+    <h2 class="fw-bold mb-3">Who We Are</h2>
+    <p class="text-muted mb-5">We’re redefining diagnostic healthcare with speed, accuracy, and comfort right at your home.</p>
+
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="p-4 bg-white shadow rounded h-100">
+          <div class="mb-3">
+            <i class="fas fa-truck-medical fa-2x text-primary"></i>
+          </div>
+          <h5 class="fw-semibold">Fastest Home Testing</h5>
+          <p class="text-muted small">We offer doorstep diagnostics in under 60 minutes to ensure your health comes first—fast.</p>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="p-4 bg-white shadow rounded h-100">
+          <div class="mb-3">
+            <i class="fas fa-microscope fa-2x text-success"></i>
+          </div>
+          <h5 class="fw-semibold">Accredited Labs</h5>
+          <p class="text-muted small">All tests are conducted in NABL-accredited labs ensuring quality, accuracy, and reliability.</p>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="p-4 bg-white shadow rounded h-100">
+          <div class="mb-3">
+            <i class="fas fa-user-md fa-2x text-warning"></i>
+          </div>
+          <h5 class="fw-semibold">Trained Phlebotomists</h5>
+          <p class="text-muted small">Our experts follow strict hygiene and safety protocols to give you peace of mind.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
   <!-- Footer Start -->
 <div class="container-fluid footer py-5 wow fadeIn bg-dark" data-wow-delay="0.2s">

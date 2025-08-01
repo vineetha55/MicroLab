@@ -114,6 +114,7 @@ urlpatterns=[
     path("Branch/Login/",views.branch_login,name="branch_login"),
     path("branch_login_check/",views.branch_login_check,name="branch_login_check"),
     path("Branch/Dashboard/",views.Branch_Dashboard,name="Branch_Dashboard"),
-    path("LogoutBranch/",views.LogoutBranch,name="LogoutBranch")
+    path("LogoutBranch/",views.LogoutBranch,name="LogoutBranch"),
+    path('set-branch/<int:branch_id>/', views.set_branch, name='set_branch'),
 
 ]

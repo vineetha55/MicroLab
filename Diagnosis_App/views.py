@@ -22,15 +22,22 @@ from math import radians, sin, cos, sqrt, atan2
 # Create your views here.
 def index(request):
     branches=Branch.objects.all()
-    most_viewed_tests = DiagnosticTest.objects.all()[:4]
-    most_viewed_checkups = Checkup.objects.all()[:4]
+    br=Branch_Selected.objects.get(session_key=request.session.session_key)
+    most_viewed_tests = DiagnosticTest.objects.filter(branch=br.branch.id)[:4]
+    most_viewed_checkups = Checkup.objects.filter(branch=br.branch.id)[:4]
+
 
     return render(request, 'indexnew.html', {
         'most_viewed_tests': most_viewed_tests,
         'most_viewed_checkups': most_viewed_checkups,
-        "branches": branches
+        "branches": branches,
+        'br':br
     })
-
+def set_branch(request, branch_id):
+    br=Branch_Selected.objects.get(session_key=request.session.session_key)
+    br.branch_id=branch_id
+    br.save()
+    return redirect('index')  # or wherever you want
 def haversine(lat1, lon1, lat2, lon2):
     R = 6371  # Earth radius in kilometers
     dlat = radians(lat2 - lat1)
@@ -63,7 +70,14 @@ def get_location_data(request):
         checkups = list(Checkup.objects.filter(branch=nearest_branch).values())
         session_key=request.session.session_key
         if session_key:
-            Branch_Selected.objects.get_or_create(branch=nearest_branch,session_key=session_key)
+            br = Branch_Selected.objects.filter(session_key=request.session.session_key)
+
+            if br:
+                brc = Branch_Selected.objects.get(session_key=request.session.session_key)
+                brc.branch=nearest_branch
+                brc.save()
+            else:
+                Branch_Selected.objects.get_or_create(branch=nearest_branch,session_key=session_key)
         else:
             request.session.create()
             session_key=request.session.session_key
@@ -451,12 +465,15 @@ def cart(request):
     checkups = Checkup.objects.filter(id__in=checkup_ids)
 
     total = sum(test.price for test in tests) + sum(c.price for c in checkups)
-
+    br = Branch_Selected.objects.filter(session_key=request.session.session_key)
+    if br:
+        br = Branch_Selected.objects.get(session_key=request.session.session_key)
     return render(request, 'cart.html', {
         'test_items': tests,
         'checkup_items': checkups,
         'total': total,
-        "branches": branches
+        "branches": branches,
+        'br':br
     })
 
 
@@ -809,6 +826,9 @@ def Logout(request):
 
 @login_required
 def My_orders(request):
+    br = Branch_Selected.objects.filter(session_key=request.session.session_key)
+    if br:
+        br = Branch_Selected.objects.get(session_key=request.session.session_key)
     status = request.GET.get('status')
     orders = Order.objects.filter(user=request.user)
 
@@ -818,10 +838,12 @@ def My_orders(request):
     orders = orders.order_by('-created_at')
     for order in orders:
         print(order.id, order.items.all())
-
+    branches=Branch.objects.all()
     return render(request, 'my_orders.html', {
         'orders': orders,
         'selected_status': status,
+        'br':br,
+        'branches':branches
     })
 
 
@@ -960,8 +982,10 @@ def My_Account(request):
         user.save()
         messages.success(request, "Your profile has been updated.")
         return redirect('My_Account')
-
-    return render(request, "My_Account.html")
+    br = Branch_Selected.objects.filter(session_key=request.session.session_key)
+    if br:
+        br = Branch_Selected.objects.get(session_key=request.session.session_key)
+    return render(request, "My_Account.html",{"br":br})
 
 def change_password(request):
     if request.method == 'POST':

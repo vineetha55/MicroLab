@@ -69,9 +69,10 @@
                     <span class="fa fa-bars"></span>
                 </button>
                 <div class="nav-item dropdown">
-                    <a href="#" class="dropdown-item {% if request.GET.branch == i.id|stringformat:'s' %}active{% endif %}" onclick="changeBranch('{{ i.id }}')">{{ i.name }}
-                    <i class="fas fa-map-marker menu-icon"></i> {{br.branch.name}}</a>
-
+                      <a href="#" class="text-dark" data-bs-toggle="modal" data-bs-target="#branchesModal">
+                 My location<br>
+                <span class="text-dark" style="font-size:10px;">{{ br.branch.name }}</span>
+                </a>
                 </div>
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <div class="navbar-nav ms-auto py-0">
@@ -158,6 +159,33 @@
 
     </div>
 </section>
+<div class="modal fade" id="branchesModal" tabindex="-1" aria-labelledby="branchesModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg"> <!-- modal-sm for compact width -->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="branchesModalLabel">Select Branch</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+        <div class="row">
+          {% for branch in branches %}
+            <div class="col-4 mb-2">
+              <a href="{% url 'set_branch' branch.id %}" class="text-decoration-none">
+                <div class="card shadow-sm p-2" style="cursor:pointer;">
+                  <div class="card-body p-2">
+                    <h6 class="card-title mb-0 text-dark">{{ branch.name }}</h6>
+                  </div>
+                </div>
+              </a>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
 
         <!-- JavaScript Libraries -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
