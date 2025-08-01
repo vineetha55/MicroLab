@@ -55,13 +55,69 @@ def haversine(lat1, lon1, lat2, lon2):
     c = 2 * atan2(sqrt(a), sqrt(1 - a))
     return R * c
 
+# def get_location_data(request):
+#     try:
+#         user_lat = float(request.GET.get('lat'))
+#         user_lon = float(request.GET.get('lon'))
+#     except (TypeError, ValueError):
+#         return JsonResponse({'error': 'Invalid coordinates'}, status=400)
+#
+#     branches = Branch.objects.all()
+#     nearest_branch = None
+#     min_distance = float('inf')
+#
+#     for branch in branches:
+#         dist = haversine(user_lat, user_lon, branch.latitude, branch.longitude)
+#         if dist < min_distance:
+#             min_distance = dist
+#             nearest_branch = branch
+#     print(nearest_branch,"brach")
+#
+#     if nearest_branch:
+#         tests = list(DiagnosticTest.objects.filter(branch=nearest_branch).values())
+#         print(tests)
+#         checkups = list(Checkup.objects.filter(branch=nearest_branch).values())
+#         session_key=request.session.session_key
+#         if session_key:
+#             br = Branch_Selected.objects.filter(session_key=request.session.session_key)
+#
+#             if br:
+#                 brc = Branch_Selected.objects.get(session_key=request.session.session_key)
+#                 brc.branch=nearest_branch
+#                 brc.save()
+#             else:
+#                 Branch_Selected.objects.get_or_create(branch=nearest_branch,session_key=session_key)
+#         else:
+#             request.session.create()
+#             session_key=request.session.session_key
+#             Branch_Selected.objects.get_or_create(branch=nearest_branch,session_key=session_key)
+#
+#         return JsonResponse({
+#             'branches': nearest_branch.name,
+#             'most_viewed_tests': tests,
+#             'most_viewed_checkups': checkups,
+#         })
+#     return JsonResponse({'error': 'No branches available'}, status=404)
 def get_location_data(request):
-    try:
-        user_lat = float(request.GET.get('lat'))
-        user_lon = float(request.GET.get('lon'))
-    except (TypeError, ValueError):
-        return JsonResponse({'error': 'Invalid coordinates'}, status=400)
+    user_lat = request.GET.get('lat')
+    user_lon = request.GET.get('lon')
 
+    if user_lat and user_lon:
+        try:
+            user_lat = float(user_lat)
+            user_lon = float(user_lon)
+        except ValueError:
+            return JsonResponse({'error': 'Invalid coordinates'}, status=400)
+    else:
+        # If no location provided, pick a default branch
+        default_branch = Branch.objects.first()  # or set your logic here
+        if default_branch:
+            user_lat = default_branch.latitude
+            user_lon = default_branch.longitude
+        else:
+            return JsonResponse({'error': 'No location or default branch'}, status=400)
+
+    # Find nearest branch
     branches = Branch.objects.all()
     nearest_branch = None
     min_distance = float('inf')
@@ -71,26 +127,15 @@ def get_location_data(request):
         if dist < min_distance:
             min_distance = dist
             nearest_branch = branch
-    print(nearest_branch,"brach")
 
     if nearest_branch:
         tests = list(DiagnosticTest.objects.filter(branch=nearest_branch).values())
-        print(tests)
         checkups = list(Checkup.objects.filter(branch=nearest_branch).values())
-        session_key=request.session.session_key
-        if session_key:
-            br = Branch_Selected.objects.filter(session_key=request.session.session_key)
 
-            if br:
-                brc = Branch_Selected.objects.get(session_key=request.session.session_key)
-                brc.branch=nearest_branch
-                brc.save()
-            else:
-                Branch_Selected.objects.get_or_create(branch=nearest_branch,session_key=session_key)
-        else:
-            request.session.create()
-            session_key=request.session.session_key
-            Branch_Selected.objects.get_or_create(branch=nearest_branch,session_key=session_key)
+        session_key = request.session.session_key or request.session.create()
+        br, created = Branch_Selected.objects.get_or_create(session_key=request.session.session_key)
+        br.branch = nearest_branch
+        br.save()
 
         return JsonResponse({
             'branches': nearest_branch.name,
@@ -99,6 +144,7 @@ def get_location_data(request):
         })
 
     return JsonResponse({'error': 'No branches available'}, status=404)
+
 
 def admin_login(request):
     return render(request,"admin_login.html")
@@ -440,6 +486,7 @@ def user_tests(request):
         br = Branch_Selected.objects.get(session_key=request.session.session_key)
     branch_id = br.branch.id
     if branch_id:
+        print("branch")
         tests = DiagnosticTest.objects.filter(branch_id=branch_id)
         most_selected_tests = DiagnosticTest.objects.filter(branch_id=branch_id).order_by('-id')[:5]
     else:

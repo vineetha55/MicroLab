@@ -92,7 +92,9 @@
   </div>
 
   <!-- Most Selected Tests -->
+   {% if most_selected_tests %}
   <h4 class="text-uppercase mb-3" style="color: var(--theme-color);">🔥 Most Selected Tests</h4>
+
   <div class="scrolling-wrapper">
     {% for test in most_selected_tests %}
     <div class="card test-card fade-slide-in">
@@ -106,9 +108,9 @@
         </div>
       </div>
     </div>
-    {% endfor %}
+{% endfor %}
   </div>
-
+{% endif %}
   <!-- All Tests -->
   <h4 class="mt-5 mb-3 text-uppercase" style="color: var(--theme-color);">📋 All Tests</h4>
   <div class="scrolling-wrapper">
@@ -124,6 +126,11 @@
         </div>
       </div>
     </div>
+    {% empty %}
+    <div class="col-12">
+      <div class="alert alert-info text-center">No Test available on this Branch.</div>
+    </div>
+
     {% endfor %}
   </div>
 </div>
